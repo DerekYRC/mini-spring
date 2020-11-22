@@ -36,5 +36,8 @@ class HelloService {
 }
 ```
 
+## BeanDefinition和BeanDefinitionRegistry
+
+
 
 

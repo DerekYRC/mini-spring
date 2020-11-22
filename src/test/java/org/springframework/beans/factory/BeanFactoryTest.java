@@ -1,8 +1,8 @@
 package org.springframework.beans.factory;
 
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 /**
  * @author derekyi
@@ -11,18 +11,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BeanFactoryTest {
 
 	@Test
-	public void testGetBean() throws Exception {
-		BeanFactory beanFactory = new BeanFactory();
-		beanFactory.registerBean("helloService", new HelloService());
-		HelloService helloService = (HelloService) beanFactory.getBean("helloService");
-		assertThat(helloService).isNotNull();
-		assertThat(helloService.sayHello()).isEqualTo("hello");
-	}
+	public void testBeanFactory() throws Exception {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		BeanDefinition beanDefinition = new BeanDefinition(HelloService.class);
+		beanFactory.registerBeanDefinition("helloService", beanDefinition);
 
-	class HelloService {
-		public String sayHello() {
-			System.out.println("hello");
-			return "hello";
-		}
+		HelloService helloService = (HelloService) beanFactory.getBean("helloService");
+		helloService.sayHello();
 	}
 }
+
