@@ -75,5 +75,58 @@ class HelloService {
 - SimpleInstantiationStrategy，使用bean的构造函数来实例化
 - CglibSubclassingInstantiationStrategy，使用CGLIB动态生成子类
 
+## 为bean填充属性
+> 分支：populate-bean-with-property-values
+
+在BeanDefinition中增加和bean属性对应的PropertyVales，实例化bean之后，为bean填充属性(AbstractAutowireCapableBeanFactory#applyPropertyValues)。
+测试：BeanFactoryTest
+```
+@Test
+public void testBeanFactory() throws Exception {
+    DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+    PropertyValues propertyValues = new PropertyValues();
+    propertyValues.addPropertyValue(new PropertyValue("foo", "hello"));
+    propertyValues.addPropertyValue(new PropertyValue("bar", "world"));
+    BeanDefinition beanDefinition = new BeanDefinition(HelloService.class, propertyValues);
+    beanFactory.registerBeanDefinition("helloService", beanDefinition);
+
+    HelloService helloService = (HelloService) beanFactory.getBean("helloService");
+    System.out.println(helloService.toString());
+    assertThat(helloService.getFoo()).isEqualTo("hello");
+    assertThat(helloService.getBar()).isEqualTo("world");
+}
+
+public class HelloService {
+
+	private String foo;
+
+	private String bar;
+
+	public String getFoo() {
+		return foo;
+	}
+
+	public void setFoo(String foo) {
+		this.foo = foo;
+	}
+
+	public String getBar() {
+		return bar;
+	}
+
+	public void setBar(String bar) {
+		this.bar = bar;
+	}
+
+	@Override
+	public String toString() {
+		return "HelloService{" +
+				"foo='" + foo + '\'' +
+				", bar='" + bar + '\'' +
+				'}';
+	}
+}
+```
+
 
 

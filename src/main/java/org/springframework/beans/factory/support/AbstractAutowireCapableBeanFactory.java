@@ -1,7 +1,12 @@
 package org.springframework.beans.factory.support;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.PropertyValue;
+import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * @author derekyi
@@ -17,10 +22,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	protected Object doCreateBean(String beanName, BeanDefinition beanDefinition) {
-		Class beanClass = beanDefinition.getBeanClass();
 		Object bean = null;
 		try {
 			bean = createBeanInstance(beanDefinition);
+			//为bean填充属性
+			applyPropertyValues(beanName, bean, beanDefinition);
 		} catch (Exception e) {
 			throw new BeansException("Instantiation of bean failed", e);
 		}
@@ -28,6 +34,33 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		addSingleton(beanName, bean);
 		return bean;
 	}
+
+	/**
+	 * 为bean填充属性
+	 *
+	 * @param bean
+	 * @param beanDefinition
+	 */
+	protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
+		try {
+			Class beanClass = beanDefinition.getBeanClass();
+
+
+			for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()) {
+				String name = propertyValue.getName();
+				String value = propertyValue.getValue();
+
+				//通过属性的set方法设置属性
+				Class<?> type = beanClass.getDeclaredField(name).getType();
+				String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
+				Method method = beanClass.getDeclaredMethod(methodName, new Class[]{type});
+				method.invoke(bean, new Object[]{value});
+			}
+		} catch (Exception ex) {
+			throw new BeansException("Error setting property values for bean: " + beanName, ex);
+		}
+	}
+
 
 	protected Object createBeanInstance(BeanDefinition beanDefinition) {
 		return getInstantiationStrategy().instantiate(beanDefinition);
