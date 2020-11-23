@@ -10,7 +10,7 @@
 
 
 ## 如何使用
-每个功能点对应一个分支，了解新增的功能，切换到以下功能点对应的分支，相关的改动点在[changelog.md](~/changelog.md)文件中描述。
+每个功能点对应一个分支，了解新增的功能，切换到以下功能点对应的分支，相关的改动点在[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)文件中描述。
 
 
 
