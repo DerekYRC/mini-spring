@@ -16,13 +16,13 @@ public class BeanFactory {
 	}
 }
 ```
-测试：
-BeanFactoryTest
+测试：BeanFactoryTest
 ```
 @Test
 public void testGetBean() throws Exception {
     BeanFactory beanFactory = new BeanFactory();
     beanFactory.registerBean("helloService", new HelloService());
+
     HelloService helloService = (HelloService) beanFactory.getBean("helloService");
     assertThat(helloService).isNotNull();
     assertThat(helloService.sayHello()).isEqualTo("hello");
@@ -47,8 +47,7 @@ class HelloService {
 bean容器作为BeanDefinitionRegistry和SingletonBeanRegistry的实现类，具备两者的能力。向bean容器中注册BeanDefintion后，使用bean时才会实例化。
 uml
 
-测试：
-BeanFactoryTest
+测试：BeanFactoryTest
 ```
 @Test
 public void testBeanFactory() throws Exception {
@@ -61,7 +60,6 @@ public void testBeanFactory() throws Exception {
 }
 
 class HelloService {
-
 	public String sayHello() {
 		System.out.println("hello");
 		return "hello";
