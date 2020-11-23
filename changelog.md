@@ -16,6 +16,7 @@ public class BeanFactory {
 	}
 }
 ```
+
 测试：BeanFactoryTest
 ```
 @Test
@@ -79,6 +80,7 @@ class HelloService {
 > 分支：populate-bean-with-property-values
 
 在BeanDefinition中增加和bean属性对应的PropertyVales，实例化bean之后，为bean填充属性(AbstractAutowireCapableBeanFactory#applyPropertyValues)。
+
 测试：BeanFactoryTest
 ```
 @Test
