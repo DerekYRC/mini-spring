@@ -45,8 +45,7 @@ class HelloService {
 - SingletonBeanRegistry及其实现类DefaultSingletonBeanRegistry，定义添加和获取单例bean的方法。
 
 bean容器作为BeanDefinitionRegistry和SingletonBeanRegistry的实现类，具备两者的能力。向bean容器中注册BeanDefintion后，使用bean时才会实例化。
-uml
-
+![](./assets/bean-definition-and-bean-definition-registry.png)
 测试：BeanFactoryTest
 ```
 @Test
