@@ -1,5 +1,6 @@
 package org.springframework.beans.factory.support;
 
+import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
@@ -36,6 +37,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 实例化bean
+	 *
+	 * @param beanDefinition
+	 * @return
+	 */
+	protected Object createBeanInstance(BeanDefinition beanDefinition) {
+		return getInstantiationStrategy().instantiate(beanDefinition);
+	}
+
+	/**
 	 * 为bean填充属性
 	 *
 	 * @param bean
@@ -43,27 +54,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
 		try {
-			Class beanClass = beanDefinition.getBeanClass();
-
-
 			for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()) {
 				String name = propertyValue.getName();
-				String value = propertyValue.getValue();
+				Object value = propertyValue.getValue();
 
-				//通过属性的set方法设置属性
-				Class<?> type = beanClass.getDeclaredField(name).getType();
-				String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
-				Method method = beanClass.getDeclaredMethod(methodName, new Class[]{type});
-				method.invoke(bean, new Object[]{value});
+				//通过反射设置属性
+				BeanUtil.setFieldValue(bean, name, value);
 			}
 		} catch (Exception ex) {
 			throw new BeansException("Error setting property values for bean: " + beanName, ex);
 		}
-	}
-
-
-	protected Object createBeanInstance(BeanDefinition beanDefinition) {
-		return getInstantiationStrategy().instantiate(beanDefinition);
 	}
 
 	public InstantiationStrategy getInstantiationStrategy() {

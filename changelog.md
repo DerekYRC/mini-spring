@@ -84,49 +84,18 @@ class HelloService {
 测试：BeanFactoryTest
 ```
 @Test
-public void testBeanFactory() throws Exception {
+public void testPopulateBeanWithPropertyValues() throws Exception {
     DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
     PropertyValues propertyValues = new PropertyValues();
-    propertyValues.addPropertyValue(new PropertyValue("foo", "hello"));
-    propertyValues.addPropertyValue(new PropertyValue("bar", "world"));
-    BeanDefinition beanDefinition = new BeanDefinition(HelloService.class, propertyValues);
-    beanFactory.registerBeanDefinition("helloService", beanDefinition);
+    propertyValues.addPropertyValue(new PropertyValue("name", "derek"));
+    propertyValues.addPropertyValue(new PropertyValue("age", 18));
+    BeanDefinition beanDefinition = new BeanDefinition(Person.class, propertyValues);
+    beanFactory.registerBeanDefinition("person", beanDefinition);
 
-    HelloService helloService = (HelloService) beanFactory.getBean("helloService");
-    System.out.println(helloService.toString());
-    assertThat(helloService.getFoo()).isEqualTo("hello");
-    assertThat(helloService.getBar()).isEqualTo("world");
-}
-
-public class HelloService {
-
-	private String foo;
-
-	private String bar;
-
-	public String getFoo() {
-		return foo;
-	}
-
-	public void setFoo(String foo) {
-		this.foo = foo;
-	}
-
-	public String getBar() {
-		return bar;
-	}
-
-	public void setBar(String bar) {
-		this.bar = bar;
-	}
-
-	@Override
-	public String toString() {
-		return "HelloService{" +
-				"foo='" + foo + '\'' +
-				", bar='" + bar + '\'' +
-				'}';
-	}
+    Person person = (Person) beanFactory.getBean("person");
+    System.out.println(person);
+    assertThat(person.getName()).isEqualTo("derek");
+    assertThat(person.getAge()).isEqualTo(18);
 }
 ```
 
