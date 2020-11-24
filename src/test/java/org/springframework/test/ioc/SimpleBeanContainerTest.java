@@ -1,14 +1,15 @@
-package org.springframework.beans.factory;
+package org.springframework.test.ioc;
 
 import org.junit.Test;
+import org.springframework.beans.factory.BeanFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author derekyi
- * @date 2020/11/22
+ * @date 2020/11/24
  */
-public class BeanFactoryTest {
+public class SimpleBeanContainerTest {
 
 	@Test
 	public void testGetBean() throws Exception {
