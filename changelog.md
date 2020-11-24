@@ -48,16 +48,19 @@ bean容器作为BeanDefinitionRegistry和SingletonBeanRegistry的实现类，具
 
 ![](./assets/bean-definition-and-bean-definition-registry.png)
 
-测试：BeanFactoryTest
+测试：
 ```
-@Test
-public void testBeanFactory() throws Exception {
-    DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-    BeanDefinition beanDefinition = new BeanDefinition(HelloService.class);
-    beanFactory.registerBeanDefinition("helloService", beanDefinition);
+public class BeanDefinitionAndBeanDefinitionRegistryTest {
 
-    HelloService helloService = (HelloService) beanFactory.getBean("helloService");
-    helloService.sayHello();
+	@Test
+	public void testBeanFactory() throws Exception {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		BeanDefinition beanDefinition = new BeanDefinition(HelloService.class);
+		beanFactory.registerBeanDefinition("helloService", beanDefinition);
+
+		HelloService helloService = (HelloService) beanFactory.getBean("helloService");
+		helloService.sayHello();
+	}
 }
 
 class HelloService {
