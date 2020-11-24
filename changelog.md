@@ -49,16 +49,19 @@ bean容器作为BeanDefinitionRegistry和SingletonBeanRegistry的实现类，具
 
 ![](./assets/bean-definition-and-bean-definition-registry.png)
 
-测试：BeanFactoryTest
+测试：
 ```
-@Test
-public void testBeanFactory() throws Exception {
-    DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-    BeanDefinition beanDefinition = new BeanDefinition(HelloService.class);
-    beanFactory.registerBeanDefinition("helloService", beanDefinition);
+public class BeanDefinitionAndBeanDefinitionRegistryTest {
 
-    HelloService helloService = (HelloService) beanFactory.getBean("helloService");
-    helloService.sayHello();
+	@Test
+	public void testBeanFactory() throws Exception {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		BeanDefinition beanDefinition = new BeanDefinition(HelloService.class);
+		beanFactory.registerBeanDefinition("helloService", beanDefinition);
+
+		HelloService helloService = (HelloService) beanFactory.getBean("helloService");
+		helloService.sayHello();
+	}
 }
 
 class HelloService {
@@ -81,21 +84,24 @@ class HelloService {
 
 在BeanDefinition中增加和bean属性对应的PropertyVales，实例化bean之后，为bean填充属性(AbstractAutowireCapableBeanFactory#applyPropertyValues)。
 
-测试：BeanFactoryTest
+测试：
 ```
-@Test
-public void testPopulateBeanWithPropertyValues() throws Exception {
-    DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-    PropertyValues propertyValues = new PropertyValues();
-    propertyValues.addPropertyValue(new PropertyValue("name", "derek"));
-    propertyValues.addPropertyValue(new PropertyValue("age", 18));
-    BeanDefinition beanDefinition = new BeanDefinition(Person.class, propertyValues);
-    beanFactory.registerBeanDefinition("person", beanDefinition);
+public class PopulateBeanWithPropertyValuesTest {
 
-    Person person = (Person) beanFactory.getBean("person");
-    System.out.println(person);
-    assertThat(person.getName()).isEqualTo("derek");
-    assertThat(person.getAge()).isEqualTo(18);
+	@Test
+	public void testPopulateBeanWithPropertyValues() throws Exception {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		PropertyValues propertyValues = new PropertyValues();
+		propertyValues.addPropertyValue(new PropertyValue("name", "derek"));
+		propertyValues.addPropertyValue(new PropertyValue("age", 18));
+		BeanDefinition beanDefinition = new BeanDefinition(Person.class, propertyValues);
+		beanFactory.registerBeanDefinition("person", beanDefinition);
+
+		Person person = (Person) beanFactory.getBean("person");
+		System.out.println(person);
+		assertThat(person.getName()).isEqualTo("derek");
+		assertThat(person.getAge()).isEqualTo(18);
+	}
 }
 ```
 
