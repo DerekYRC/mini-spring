@@ -17,23 +17,25 @@ public class BeanFactory {
 }
 ```
 
-测试：BeanFactoryTest
+测试：
 ```
-@Test
-public void testGetBean() throws Exception {
-    BeanFactory beanFactory = new BeanFactory();
-    beanFactory.registerBean("helloService", new HelloService());
+public class SimpleBeanContainerTest {
 
-    HelloService helloService = (HelloService) beanFactory.getBean("helloService");
-    assertThat(helloService).isNotNull();
-    assertThat(helloService.sayHello()).isEqualTo("hello");
-}
+	@Test
+	public void testGetBean() throws Exception {
+		BeanFactory beanFactory = new BeanFactory();
+		beanFactory.registerBean("helloService", new HelloService());
+		HelloService helloService = (HelloService) beanFactory.getBean("helloService");
+		assertThat(helloService).isNotNull();
+		assertThat(helloService.sayHello()).isEqualTo("hello");
+	}
 
-class HelloService {
-    public String sayHello() {
-        System.out.println("hello");
-        return "hello";
-    }
+	class HelloService {
+		public String sayHello() {
+			System.out.println("hello");
+			return "hello";
+		}
+	}
 }
 ```
 
