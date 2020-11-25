@@ -177,3 +177,74 @@ public class PopulateBeanWithPropertyValuesTest {
 ```
 
 ## 资源和资源加载器
+Resource是资源的抽象和访问接口，简单写了三个实现类
+
+![](./assets/resource.png)
+
+- FileSystemResource，文件系统资源的实现类
+- ClassPathResource，classpath下资源的实现类
+- UrlResource，对java.net.URL进行资源定位的实现类
+
+ResourceLoader接口则是资源查找定位策略的抽象，DefaultResourceLoader是其默认实现类
+
+测试：
+```
+public class ResourceAndResourceLoaderTest {
+
+	@Test
+	public void testResourceLoader() throws Exception {
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+
+		//加载classpath下的资源
+		Resource resource = resourceLoader.getResource("classpath:hello.txt");
+		InputStream inputStream = resource.getInputStream();
+		String content = IoUtil.readUtf8(inputStream);
+		System.out.println(content);
+		assertThat(content).isEqualTo("hello world");
+
+		//加载文件系统资源
+		resource = resourceLoader.getResource("src/test/resources/hello.txt");
+		assertThat(resource instanceof FileSystemResource).isTrue();
+		inputStream = resource.getInputStream();
+		content = IoUtil.readUtf8(inputStream);
+		System.out.println(content);
+		assertThat(content).isEqualTo("hello world");
+
+		//加载url资源
+		resource = resourceLoader.getResource("https://www.baidu.com");
+		assertThat(resource instanceof UrlResource).isTrue();
+		inputStream = resource.getInputStream();
+		content = IoUtil.readUtf8(inputStream);
+		System.out.println(content);
+	}
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
