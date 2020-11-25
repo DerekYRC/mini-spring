@@ -177,6 +177,8 @@ public class PopulateBeanWithPropertyValuesTest {
 ```
 
 ## 资源和资源加载器
+> 分支：resource-and-resource-loader
+
 Resource是资源的抽象和访问接口，简单写了三个实现类
 
 ![](./assets/resource.png)
