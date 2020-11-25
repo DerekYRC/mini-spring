@@ -9,6 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <name>mini-spring</name>
 
+    <url>https://github.com/DerekYRC/mini-spring</url>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>

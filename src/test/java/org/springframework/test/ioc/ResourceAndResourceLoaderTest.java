@@ -34,7 +34,7 @@ public class ResourceAndResourceLoaderTest {
 		assertThat(content).isEqualTo("hello world");
 
 		//加载url资源
-		resource = resourceLoader.getResource("https://www.baidu.com");
+		resource = resourceLoader.getResource("https://github.com/DerekYRC/mini-spring/blob/main/README.md");
 		assertThat(resource instanceof UrlResource).isTrue();
 		inputStream = resource.getInputStream();
 		content = IoUtil.readUtf8(inputStream);
