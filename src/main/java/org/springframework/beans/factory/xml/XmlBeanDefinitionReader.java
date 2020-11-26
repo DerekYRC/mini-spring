@@ -98,6 +98,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 							}
 						}
 					}
+					//注册BeanDefinition
 					getRegistry().registerBeanDefinition(beanName, beanDefinition);
 				}
 			}
