@@ -23,10 +23,6 @@ public class DefaultResourceLoader implements ResourceLoader {
 				return new UrlResource(url);
 			} catch (MalformedURLException ex) {
 				//当成文件系统下的资源处理
-				String path = location;
-				if (location.startsWith("/")) {
-					path = location.substring(1);
-				}
 				return new FileSystemResource(location);
 			}
 		}
