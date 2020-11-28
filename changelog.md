@@ -280,6 +280,75 @@ public class XmlFileDefineBeanTest {
 }
 ```
 
+## BeanFactoryPostProcess和BeanPostProcessor
+> 分支：bean-factory-post-processor-and-bean-post-processor
+
+BeanFactoryPostProcess和BeanPostProcessor是spring框架中具有重量级地位的两个接口，理解了这两个接口的作用，基本就理解spring的核心原理了。为了降低理解难度分两个小节实现。
+
+BeanFactoryPostProcessor是spring提供的容器扩展机制，允许我们在bean实例化之前修改bean的定义信息即BeanDefinition的信息。其重要的实现类有PropertyPlaceholderConfigurer和CustomEditorConfigurer，PropertyPlaceholderConfigurer的作用是用properties文件的配置值替换xml文件中的占位符，CustomEditorConfigurer的作用是实现类型转换。
+BeanFactoryPostProcessor的实现比较简单，看单元测试BeanFactoryProcessorAndBeanPostProcessorTest#testBeanFactoryPostProcessor追下代码。
+
+BeanPostProcessor也是spring提供的容器扩展机制，不同于BeanFactoryPostProcessor的是，BeanPostProcessor在bean实例化后修改bean或替换bean。
+
+BeanPostProcessor的两个方法分别在bean执行初始化方法（后面实现）之前和之后执行，理解其实现重点看单元测试BeanFactoryProcessorAndBeanPostProcessorTest#testBeanPostProcessor和AbstractAutowireCapableBeanFactory#initializeBean方法，有些地方做了微调，可不必关注。
+
+```
+public interface BeanPostProcessor {
+	/**
+	 * 在bean执行初始化方法之前执行此方法
+	 */
+	Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException;
+
+	/**
+	 * 在bean执行初始化方法之后执行此方法
+	 */
+	Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException;
+}
+```
+
+下一节将引入ApplicationContext，能自动识别BeanFactoryPostProcessor和BeanPostProcessor，就可以在xml文件中配置而不需要手动添加到BeanFactory了。
+
+测试：
+```
+public class BeanFactoryProcessorAndBeanPostProcessorTest {
+
+	@Test
+	public void testBeanFactoryPostProcessor() throws Exception {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
+		beanDefinitionReader.loadBeanDefinitions("classpath:spring.xml");
+
+		//在所有BeanDefintion加载完成后，但在bean实例化之前，修改BeanDefinition的属性值
+		CustomBeanFactoryPostProcessor beanFactoryPostProcessor = new CustomBeanFactoryPostProcessor();
+		beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
+
+		Person person = (Person) beanFactory.getBean("person");
+		System.out.println(person);
+		//name属性在CustomBeanFactoryPostProcessor中被修改为ivy
+		assertThat(person.getName()).isEqualTo("ivy");
+	}
+
+	@Test
+	public void testBeanPostProcessor() throws Exception {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
+		beanDefinitionReader.loadBeanDefinitions("classpath:spring.xml");
+
+		//添加bean实例化后的处理器
+		CustomerBeanPostProcessor customerBeanPostProcessor = new CustomerBeanPostProcessor();
+		beanFactory.addBeanPostProcessor(customerBeanPostProcessor);
+
+		Car car = (Car) beanFactory.getBean("car");
+		System.out.println(car);
+		//brand属性在CustomerBeanPostProcessor中被修改为lamborghini
+		assertThat(car.getBrand()).isEqualTo("lamborghini");
+	}
+}
+```
+
+
+
+
 
 
 
