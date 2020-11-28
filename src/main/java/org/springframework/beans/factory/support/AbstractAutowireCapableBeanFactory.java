@@ -12,7 +12,8 @@ import org.springframework.beans.factory.config.BeanReference;
  * @author derekyi
  * @date 2020/11/22
  */
-public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
+public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory
+		implements AutowireCapableBeanFactory {
 
 	private InstantiationStrategy instantiationStrategy = new SimpleInstantiationStrategy();
 
@@ -123,7 +124,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	protected void invokeInitMethods(String beanName, Object bean, BeanDefinition beanDefinition) {
 		//TODO 后面会实现
-		System.out.println("执行bean[" + beanName + "]的初始化方法");
 	}
 
 	public InstantiationStrategy getInstantiationStrategy() {
