@@ -15,5 +15,4 @@
     <bean id="car" class="org.springframework.test.ioc.bean.Car">
         <property name="brand" value="porsche"/>
     </bean>
-
 </beans>
