@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author derekyi
  * @date 2020/11/28
  */
-public class BeanFactoryProcessorAndBeanPostProcessorTest {
+public class BeanFactoryPostProcessorAndBeanPostProcessorTest {
 
 	@Test
 	public void testBeanFactoryPostProcessor() throws Exception {
