@@ -12,7 +12,8 @@ import org.springframework.beans.factory.config.BeanReference;
  * @author derekyi
  * @date 2020/11/22
  */
-public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
+public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory
+		implements AutowireCapableBeanFactory {
 
 	private InstantiationStrategy instantiationStrategy = new SimpleInstantiationStrategy();
 
