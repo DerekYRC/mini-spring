@@ -1,4 +1,4 @@
-# <img src="src/docs/spring-framework.png" width="80" height="80"> mini-spring
+# <img src="assets/spring-framework.png" width="80" height="80"> mini-spring
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/DerekYRC/mini-spring)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
