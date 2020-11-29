@@ -358,8 +358,87 @@ BeanFactory是spring的基础设施，面向spring本身；而ApplicationContext
 
 ![](./assets/application-context-life-cycle.png)
 
+## bean的初始化和销毁方法
+> 分支：init-and-destroy-method
 
+在spring中，定义bean的初始化和销毁方法有三种方法：
+- 在xml文件中制定init-method和destroy-method
+- 继承自InitializingBean和DisposableBean
+- 在方法上加注解PostConstruct和PreDestroy
 
+第三种通过BeanPostProcessor实现，在扩展篇中实现，本节只实现前两种。
+
+针对第一种在xml文件中指定初始化和销毁方法的方式，在BeanDefinition中增加属性initMethodName和destroyMethodName。
+
+初始化方法在AbstractAutowireCapableBeanFactory#invokeInitMethods执行。DefaultSingletonBeanRegistry中增加属性disposableBeans保存拥有销毁方法的bean，拥有销毁方法的bean在AbstractAutowireCapableBeanFactory#registerDisposableBeanIfNecessary中注册到disposableBeans中。为了确保销毁方法在虚拟机关闭之前执行，向虚拟机中注册一个钩子方法，查看AbstractApplicationContext#registerShutdownHook（非web应用需要手动调用该方法）。当然也可以手动调用ApplicationContext#close方法关闭容器。
+
+到此为止，bean的生命周期如下：
+
+![](./assets/init-and-destroy-method.png)
+
+测试：
+init-and-destroy-method.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <bean id="person" class="org.springframework.test.ioc.bean.Person" init-method="customInitMethod" destroy-method="customDestroyMethod">
+        <property name="name" value="derek"/>
+        <property name="car" ref="car"/>
+    </bean>
+
+    <bean id="car" class="org.springframework.test.ioc.bean.Car">
+        <property name="brand" value="porsche"/>
+    </bean>
+
+</beans>
+```
+```
+public class Person implements InitializingBean, DisposableBean {
+
+	private String name;
+
+	private int age;
+
+	private Car car;
+
+	public void customInitMethod() {
+		System.out.println("I was born in the method named customInitMethod");
+	}
+
+	public void customDestroyMethod() {
+		System.out.println("I died in the method named customDestroyMethod");
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("I was born in the method named afterPropertiesSet");
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		System.out.println("I died in the method named destroy");
+	}
+
+    //setter and getter
+}
+```
+```
+public class InitAndDestoryMethodTest {
+
+	@Test
+	public void testInitAndDestroyMethod() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:init-and-destroy-method.xml");
+		applicationContext.registerShutdownHook();  //或者手动关闭 applicationContext.close();
+	}
+}
+```
 
 
 
