@@ -1,19 +1,47 @@
+# <img src="src/docs/spring-framework.png" width="80" height="80"> mini-spring
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/DerekYRC/mini-spring)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-# mini-spring
 ## 关于
-**mini-spring**是简化版的spring。写作该项目的目的有二，一是加深本人对spring源码的理解；二是引导小伙伴更好地阅读spring源码。
+**mini-spring**是简化版的spring框架，能帮助你快速熟悉spring源码和掌握spring的核心原理。抽取了spring的核心逻辑，代码极度简化，保留spring的核心功能，如IoC和AOP、资源加载器、事件监听器、类型转换、容器扩展点、bean生命周期和作用域、应用上下文等核心功能。
 
-对于想要阅读spring源码来提升内功的小伙伴来说，直接阅读spring源码不是一个很好的选择。spring是一部设计精良的机器，从外部来看，它优雅、强大又简单易用；从内部来看，它包含众多的部件，细节繁多。如果直接阅读spring源码，很容易陷入到繁多的代码细节之中，理不清代码层次，打击读源码的信心。如果在阅读之前，先了解spring的设计思想、模块设计和代码层次等，然后带着这些知识再去阅读spring源码，将事半功倍。
+## 功能
+#### 基础篇
+* [IoC](#IoC)
+    * [最基本的容器](#最基本的容器)
+    * [BeanDefinition和BeanDefinitionRegistry](#BeanDefinition和BeanDefinitionRegistry)
+    * [Bean实例化策略InstantiationStrategy](#Bean实例化策略InstantiationStrategy)
+    * [为bean填充属性](#为bean填充属性)
+    * [为bean注入bean](#为bean注入bean)
+    * [资源和资源加载器](#资源和资源加载器)
+    * [在xml文件中定义bean](#在xml文件中定义bean)
+    * [容器扩展机制BeanFactoryPostProcess和BeanPostProcessor](#容器扩展机制BeanFactoryPostProcess和BeanPostProcessor)
+    * [应用上下文ApplicationContext](#应用上下文ApplicationContext)
+    * [bean的初始化和销毁方法](#bean的初始化和销毁方法)
+    * [属性编辑器和类型转换](#属性编辑器和类型转换)
+    * [容器事件和时间监听器](#容器事件和时间监听器)
+    * [Aware接口](#Aware接口)
+* [AOP](#AOP)
+    * [JDK动态代理](#JDK动态代理)
+    * [CGLib动态代理](#CGLib动态代理)
+    * [织入方法判断](#织入方法判断)
+    * [动态代理融入bean生命周期](#动态代理融入bean生命周期)
 
-本项目既然是简化版的spring，不追求功能完备，只追求尽可能保留spring的主要功能的前提下，代码简单明了。本项目结合本人阅读spring源码的经验，一步步实现带IOC和AOP功能的迷你型spring，部分实现逻辑会适当简化方便理解。
 
+#### 扩展篇
+* [bean作用域，增加prototype的支持](#bean作用域，增加prototype的支持)
+* [PropertyPlaceholderConfigurer](#PropertyPlaceholderConfigurer)
+* [FactoryBean](#FactoryBean)
+* [包扫描](#包扫描)
+* [基于注解的依赖注入Autowired](#基于注解的依赖注入Autowired)
 
+#### 高级篇
+* [解决循环依赖问题](#解决循环依赖问题)
 
-## 如何使用
-每个功能点对应一个分支，切换到功能点对应的分支，了解新增的功能，改动点在[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)文件中描述。
-
-
+## 使用方法
+每个功能点对应一个分支，切换到功能点对应的分支了解新增的功能，增量改动点在[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)文件中描述。
 
 ## 参考
 - [《Spring源码深度解析》](https://book.douban.com/subject/25866350/)
+- [《精通Spring 4.x》](https://book.douban.com/subject/26952826/)
 - [tiny-spring](https://github.com/code4craft/tiny-spring)
