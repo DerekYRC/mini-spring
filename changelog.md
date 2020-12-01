@@ -445,7 +445,70 @@ public class InitAndDestoryMethodTest {
 ## Aware接口
 > 分支：aware-interface
 
+Aware是感知、意识的意思，Aware接口是标记性接口，其实现子类能感知容器相关的对象。常用的Aware接口有BeanFactoryAware和ApplicationContextAware，分别能让其实现者感知所属的BeanFactory和ApplicationContext。
 
+让实现BeanFactoryAware接口的类能感知所属的BeanFactory，实现比较简单，查看AbstractAutowireCapableBeanFactory#initializeBean前三行。
+
+实现ApplicationContextAware的接口感知ApplicationContext，是通过BeanPostProcessor。由bean的生命周期可知，bean实例化后会经过BeanPostProcessor的前置处理和后置处理。定义一个BeanPostProcessor的实现类ApplicationContextAwareProcessor，在AbstractApplicationContext#refresh方法中加入到BeanFactory中，在前置处理中为bean设置所属的ApplicationContext。
+
+至止，bean的生命周期如下：
+
+![](./assets/aware-interface.png)
+
+测试：
+spring.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <bean id="helloService" class="org.springframework.test.ioc.service.HelloService"/>
+
+</beans>
+```
+```
+public class HelloService implements ApplicationContextAware, BeanFactoryAware {
+
+	private ApplicationContext applicationContext;
+
+	private BeanFactory beanFactory;
+
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+	public BeanFactory getBeanFactory() {
+		return beanFactory;
+	}
+}
+```
+```
+public class AwareInterfaceTest {
+
+	@Test
+	public void test() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+		HelloService helloService = applicationContext.getBean("helloService", HelloService.class);
+		assertThat(helloService.getApplicationContext()).isNotNull();
+		assertThat(helloService.getBeanFactory()).isNotNull();
+	}
+}
+```
 
 
 
