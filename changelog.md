@@ -512,8 +512,46 @@ public class AwareInterfaceTest {
 }
 ```
 
+## bean作用域，增加prototype的支持
+> 分支：prototype-bean
 
+每次向容器获取prototype作用域bean时，容器都会创建一个新的实例。在BeanDefinition中增加描述bean的作用域的字段scope/singleton/prototype，创建prototype作用域bean时（AbstractAutowireCapableBeanFactory#doCreateBean），不往singletonObjects中增加该bean。prototype作用域bean不执行销毁方法，查看AbstractAutowireCapableBeanFactory#registerDisposableBeanIfNecessary方法。
 
+至止，bean的生命周期如下：
+
+![](./assets/prototype-bean.png)
+
+测试：
+prototype-bean.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <bean id="car" class="org.springframework.test.ioc.bean.Car" scope="prototype">
+        <property name="brand" value="porsche"/>
+    </bean>
+
+</beans>
+```
+```
+public class PrototypeBeanTest {
+
+	@Test
+	public void testPrototype() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:prototype-bean.xml");
+
+		Car car1 = applicationContext.getBean("car", Car.class);
+		Car car2 = applicationContext.getBean("car", Car.class);
+		assertThat(car1 != car2).isTrue();
+	}
+}
+```
 
 
 
