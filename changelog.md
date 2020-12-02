@@ -553,8 +553,66 @@ public class PrototypeBeanTest {
 }
 ```
 
+## FactoryBean
+> 分支：factory-bean
 
+FactoryBean是一种特殊的bean，当向容器获取该bean时，容器不是返回其本身，而是返回其FactoryBean#getObject方法的返回值，可通过编码方式定义复杂的bean。
 
+实现逻辑比较简单，当容器发现bean为FactoryBean类型时，调用其getObject方法返回最终bean。当FactoryBean#isSingleton==true，将最终bean放进缓存中，下次从缓存中获取。改动点见AbstractBeanFactory#getBean。
+
+测试：
+factory-bean.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <bean id="car" class="org.springframework.test.ioc.common.CarFactoryBean">
+        <property name="brand" value="porsche"/>
+    </bean>
+
+</beans>
+```
+```
+public class CarFactoryBean implements FactoryBean<Car> {
+
+	private String brand;
+
+	@Override
+	public Car getObject() throws Exception {
+		Car car = new Car();
+		car.setBrand(brand);
+		return car;
+	}
+
+	@Override
+	public boolean isSingleton() {
+		return true;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+}
+```
+```
+public class FactoryBeanTest {
+
+	@Test
+	public void testFactoryBean() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:factory-bean.xml");
+
+		Car car = applicationContext.getBean("car", Car.class);
+		applicationContext.getBean("car");
+		assertThat(car.getBrand()).isEqualTo("porsche");
+	}
+}
+```
 
 
 
