@@ -451,6 +451,8 @@ Aware是感知、意识的意思，Aware接口是标记性接口，其实现子�
 
 实现ApplicationContextAware的接口感知ApplicationContext，是通过BeanPostProcessor。由bean的生命周期可知，bean实例化后会经过BeanPostProcessor的前置处理和后置处理。定义一个BeanPostProcessor的实现类ApplicationContextAwareProcessor，在AbstractApplicationContext#refresh方法中加入到BeanFactory中，在前置处理中为bean设置所属的ApplicationContext。
 
+改用dom4j解析xml文件。
+
 至止，bean的生命周期如下：
 
 ![](./assets/aware-interface.png)
