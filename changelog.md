@@ -247,12 +247,12 @@ bean定义文件spring.xml
 		 http://www.springframework.org/schema/context
 		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <bean id="person" class="org.springframework.test.ioc.bean.Person">
+    <bean id="person" class="org.springframework.test.bean.Person">
         <property name="name" value="derek"/>
         <property name="car" ref="car"/>
     </bean>
 
-    <bean id="car" class="org.springframework.test.ioc.bean.Car">
+    <bean id="car" class="org.springframework.test.bean.Car">
         <property name="brand" value="porsche"/>
     </bean>
 
@@ -392,12 +392,12 @@ init-and-destroy-method.xml
 		 http://www.springframework.org/schema/context
 		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <bean id="person" class="org.springframework.test.ioc.bean.Person" init-method="customInitMethod" destroy-method="customDestroyMethod">
+    <bean id="person" class="org.springframework.test.bean.Person" init-method="customInitMethod" destroy-method="customDestroyMethod">
         <property name="name" value="derek"/>
         <property name="car" ref="car"/>
     </bean>
 
-    <bean id="car" class="org.springframework.test.ioc.bean.Car">
+    <bean id="car" class="org.springframework.test.bean.Car">
         <property name="brand" value="porsche"/>
     </bean>
 
@@ -471,7 +471,7 @@ spring.xml
 		 http://www.springframework.org/schema/context
 		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <bean id="helloService" class="org.springframework.test.ioc.service.HelloService"/>
+    <bean id="helloService" class="org.springframework.test.service.HelloService"/>
 
 </beans>
 ```
@@ -535,7 +535,7 @@ prototype-bean.xml
 		 http://www.springframework.org/schema/context
 		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <bean id="car" class="org.springframework.test.ioc.bean.Car" scope="prototype">
+    <bean id="car" class="org.springframework.test.bean.Car" scope="prototype">
         <property name="brand" value="porsche"/>
     </bean>
 
@@ -574,7 +574,7 @@ factory-bean.xml
 		 http://www.springframework.org/schema/context
 		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <bean id="car" class="org.springframework.test.ioc.common.CarFactoryBean">
+    <bean id="car" class="org.springframework.test.common.CarFactoryBean">
         <property name="brand" value="porsche"/>
     </bean>
 
@@ -635,11 +635,11 @@ event-and-event-listener.xml
 		 http://www.springframework.org/schema/context
 		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <bean class="org.springframework.test.ioc.common.event.ContextRefreshedEventListener"/>
+    <bean class="org.springframework.test.common.event.ContextRefreshedEventListener"/>
 
-    <bean class="org.springframework.test.ioc.common.event.CustomEventListener"/>
+    <bean class="org.springframework.test.common.event.CustomEventListener"/>
 
-    <bean class="org.springframework.test.ioc.common.event.ContextClosedEventListener"/>
+    <bean class="org.springframework.test.common.event.ContextClosedEventListener"/>
 </beans>
 ```
 ```
@@ -656,11 +656,41 @@ public class EventAndEventListenerTest {
 ```
 观察输出：
 ```
-org.springframework.test.ioc.common.event.ContextRefreshedEventListener
-org.springframework.test.ioc.common.event.CustomEventListener
-org.springframework.test.ioc.common.event.ContextClosedEventListener
+org.springframework.test.common.event.ContextRefreshedEventListener
+org.springframework.test.common.event.CustomEventListener
+org.springframework.test.common.event.ContextClosedEventListener
 ```
 
+## 切点表达式
+> 分支：pointcut-expression
+
+Joinpoint，织入点，指需要执行代理操作的某个类的某个方法(仅支持方法级别的JoinPoint)；Pointcut是JoinPoint的表述方式，能捕获JoinPoint。
+
+最常用的切点表达式是AspectJ的切点表达式。需要匹配类，定义ClassFilter接口；匹配方法，定义MethodMatcher接口。PointCut需要同时匹配类和方法，包含ClassFilter和MethodMatcher，AspectJExpressionPointcut是支持AspectJ切点表达式的PointCut实现，简单实现仅支持execution函数。
+
+测试：
+```
+public class HelloService {
+	public String sayHello() {
+		System.out.println("hello");
+		return "hello";
+	}
+}
+```
+```
+public class PointcutExpressionTest {
+
+	@Test
+	public void testPointcutExpression() throws Exception {
+		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut("execution(* org.springframework.test.service.HelloService.*(..))");
+		Class<HelloService> clazz = HelloService.class;
+		Method method = clazz.getDeclaredMethod("sayHello");
+
+		assertThat(pointcut.matches(clazz)).isTrue();
+		assertThat(pointcut.matches(method, clazz)).isTrue();
+	}
+}
+```
 
 
 

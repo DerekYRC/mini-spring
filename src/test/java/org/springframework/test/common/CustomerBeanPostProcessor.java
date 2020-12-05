@@ -1,8 +1,8 @@
-package org.springframework.test.ioc.common;
+package org.springframework.test.common;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.test.ioc.bean.Car;
+import org.springframework.test.bean.Car;
 
 /**
  * @author derekyi

@@ -1,4 +1,4 @@
-package org.springframework.test.ioc.common.event;
+package org.springframework.test.common.event;
 
 import org.springframework.context.ApplicationListener;
 
