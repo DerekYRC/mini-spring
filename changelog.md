@@ -358,6 +358,8 @@ BeanFactory是spring的基础设施，面向spring本身；而ApplicationContext
 
 ![](./assets/application-context-life-cycle.png)
 
+测试：见ApplicationContextTest
+
 ## bean的初始化和销毁方法
 > 分支：init-and-destroy-method
 
@@ -614,10 +616,50 @@ public class FactoryBeanTest {
 }
 ```
 
+## 容器事件和时间监听器
+> 分支：event-and-event-listener
 
+ApplicationContext容器提供了完善的时间发布和时间监听功能。
 
+ApplicationEventMulticaster接口是注册监听器和发布事件的抽象，AbstractApplicationContext包含其实现类实例作为其属性，使得ApplicationContext容器具有注册监听器和发布事件的能力。在AbstractApplicationContext#refresh方法中，会实例化ApplicationEventMulticaster、注册监听器并发布容器刷新事件ContextRefreshedEvent；在AbstractApplicationContext#doClose方法中，发布容器关闭事件ContextClosedEvent。
 
+测试：
+event-and-event-listener.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+    <bean class="org.springframework.test.ioc.common.event.ContextRefreshedEventListener"/>
+
+    <bean class="org.springframework.test.ioc.common.event.CustomEventListener"/>
+
+    <bean class="org.springframework.test.ioc.common.event.ContextClosedEventListener"/>
+</beans>
+```
+```
+public class EventAndEventListenerTest {
+
+	@Test
+	public void testEventListener() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:event-and-event-listener.xml");
+		applicationContext.publishEvent(new CustomEvent(applicationContext));
+
+		applicationContext.registerShutdownHook();//或者applicationContext.close()主动关闭容器;
+	}
+}
+```
+观察输出：
+```
+org.springframework.test.ioc.common.event.ContextRefreshedEventListener
+org.springframework.test.ioc.common.event.CustomEventListener
+org.springframework.test.ioc.common.event.ContextClosedEventListener
+```
 
 
 

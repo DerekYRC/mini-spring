@@ -10,6 +10,6 @@ import org.springframework.core.io.ResourceLoader;
  * @author derekyi
  * @date 2020/11/28
  */
-public interface ApplicationContext extends ListableBeanFactory, HierarchicalBeanFactory, ResourceLoader {
+public interface ApplicationContext extends ListableBeanFactory, HierarchicalBeanFactory, ResourceLoader, ApplicationEventPublisher {
 
 }
