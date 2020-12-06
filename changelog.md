@@ -790,3 +790,79 @@ public class DynamicProxyTest {
 }
 ```
 
+## 几种常用的Advice：BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice...
+> 分支： common-advice
+
+Spring将AOP联盟中的Advice细化出各种类型的Advice，常用的有BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice，我们可以通过扩展MethodInterceptor来实现。
+
+只简单实现BeforeAdvice，有兴趣的同学可以帮忙实现另外几种Advice。定义MethodBeforeAdviceInterceptor拦截器，在执行被代理方法之前，先执行BeforeAdvice的方法。
+- [x] BeforeAdvice
+- [ ] AfterAdvice
+- [ ] AfterReturningAdvice
+- [ ] ThrowsAdvice   
+
+测试：
+```
+public class WorldServiceBeforeAdvice implements MethodBeforeAdvice {
+
+	@Override
+	public void before(Method method, Object[] args, Object target) throws Throwable {
+		System.out.println("BeforeAdvice: do something before the earth explodes");
+	}
+}
+```
+```
+public class DynamicProxyTest {
+
+	private AdvisedSupport advisedSupport;
+
+	@Before
+	public void setup() {
+		WorldService worldService = new WorldServiceImpl();
+
+		advisedSupport = new AdvisedSupport();
+		TargetSource targetSource = new TargetSource(worldService);
+		MethodMatcher methodMatcher = new AspectJExpressionPointcut("execution(* org.springframework.test.service.WorldService.explode(..))").getMethodMatcher();
+		advisedSupport.setTargetSource(targetSource);
+		advisedSupport.setMethodMatcher(methodMatcher);
+	}
+
+	@Test
+	public void testBeforeAdvice() throws Exception {
+		//设置BeforeAdvice
+		WorldServiceBeforeAdvice beforeAdvice = new WorldServiceBeforeAdvice();
+		MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(beforeAdvice);
+		advisedSupport.setMethodInterceptor(methodInterceptor);
+
+		WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+		proxy.explode();
+	}
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
