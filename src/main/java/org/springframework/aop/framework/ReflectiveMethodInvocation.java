@@ -11,11 +11,11 @@ import java.lang.reflect.Method;
  */
 public class ReflectiveMethodInvocation implements MethodInvocation {
 
-	private final Object target;
+	protected final Object target;
 
-	private final Method method;
+	protected final Method method;
 
-	private final Object[] arguments;
+	protected final Object[] arguments;
 
 	public ReflectiveMethodInvocation(Object target, Method method, Object[] arguments) {
 		this.target = target;
