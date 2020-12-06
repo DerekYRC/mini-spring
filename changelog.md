@@ -751,6 +751,42 @@ public class DynamicProxyTest {
 }
 ```
 
+## AOP代理工厂
+> 分支：proxy-factory
 
+增加AOP代理工厂ProxyFactory，由AdvisedSupport#proxyTargetClass属性决定使用JDK动态代理还是CGLIB动态代理。
 
+测试：
+```
+public class DynamicProxyTest {
+
+	private AdvisedSupport advisedSupport;
+
+	@Before
+	public void setup() {
+		WorldService worldService = new WorldServiceImpl();
+
+		advisedSupport = new AdvisedSupport();
+		TargetSource targetSource = new TargetSource(worldService);
+		WorldServiceInterceptor methodInterceptor = new WorldServiceInterceptor();
+		MethodMatcher methodMatcher = new AspectJExpressionPointcut("execution(* org.springframework.test.service.WorldService.explode(..))").getMethodMatcher();
+		advisedSupport.setTargetSource(targetSource);
+		advisedSupport.setMethodInterceptor(methodInterceptor);
+		advisedSupport.setMethodMatcher(methodMatcher);
+	}
+
+	@Test
+	public void testProxyFactory() throws Exception {
+		// 使用JDK动态代理
+		advisedSupport.setProxyTargetClass(false);
+		WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+		proxy.explode();
+
+		// 使用CGLIB动态代理
+		advisedSupport.setProxyTargetClass(true);
+		proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+		proxy.explode();
+	}
+}
+```
 
