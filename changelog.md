@@ -840,7 +840,42 @@ public class DynamicProxyTest {
 }
 ```
 
+## PointcutAdvisor：Pointcut和Advice的组合
+> 分支：pointcut-advisor
 
+Advisor是包含一个Pointcut和一个Advice的组合，Pointcut用于捕获JoinPoint，Advice决定在JoinPoint执行某种操作。实现了一个支持aspectj表达式的AspectJExpressionPointcutAdvisor。
+
+测试：
+```
+public class DynamicProxyTest {
+
+	@Test
+	public void testAdvisor() throws Exception {
+		WorldService worldService = new WorldServiceImpl();
+
+		//Advisor是Pointcut和Advice的组合
+		String expression = "execution(* org.springframework.test.service.WorldService.explode(..))";
+		AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
+		advisor.setExpression(expression);
+		MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(new WorldServiceBeforeAdvice());
+		advisor.setAdvice(methodInterceptor);
+
+		ClassFilter classFilter = advisor.getPointcut().getClassFilter();
+		if (classFilter.matches(worldService.getClass())) {
+			AdvisedSupport advisedSupport = new AdvisedSupport();
+			TargetSource targetSource = new TargetSource(worldService);
+			advisedSupport.setTargetSource(targetSource);
+			advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
+			advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
+//			advisedSupport.setProxyTargetClass(true);   //JDK or CGLIB
+
+			WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+			proxy.explode();
+		}
+	}
+}
+
+```
 
 
 

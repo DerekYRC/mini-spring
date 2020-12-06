@@ -30,6 +30,7 @@
     * [基于CGLIB的动态代理](#基于CGLIB的动态代理)
     * [AOP代理工厂ProxyFactory](#AOP代理工厂ProxyFactory)
     * [几种常用的Advice: BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice](#几种常用的Advice)
+    * [Advisor：Pointcut和Advice的组合](#Advisor：Pointcut和Advice的组合)
     * [动态代理融入bean生命周期](#动态代理融入bean生命周期)
     
 
