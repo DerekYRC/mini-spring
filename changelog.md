@@ -931,8 +931,50 @@ public class AutoProxyTest {
 }
 ```
 
+## PropertyPlaceholderConfigurer
+> 分支：property-placeholder-configurer
 
+经常需要将配置信息配置在properties文件中，然后在XML文件中以占位符的方式引用。
 
+实现思路很简单，在bean实例化之前，编辑BeanDefinition，解析XML文件中的占位符，然后用properties文件中的配置值替换占位符。而BeanFactoryPostProcessor具有编辑BeanDefinition的能力，因此PropertyPlaceholderConfigurer继承自BeanFactoryPostProcessor。
+
+测试：
+car.properties
+```
+brand=lamborghini
+```
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <bean class="org.springframework.beans.factory.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:car.properties" />
+    </bean>
+
+    <bean id="car" class="org.springframework.test.bean.Car">
+        <property name="brand" value="${brand}" />
+    </bean>
+
+</beans>
+```
+```
+public class PropertyPlaceholderConfigurerTest {
+
+	@Test
+	public void test() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:property-placeholder-configurer.xml");
+
+		Car car = applicationContext.getBean("car", Car.class);
+		assertThat(car.getBrand()).isEqualTo("lamborghini");
+	}
+}
+```
 
 
 
