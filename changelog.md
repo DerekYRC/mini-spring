@@ -981,7 +981,7 @@ public class PropertyPlaceholderConfigurerTest {
 
 结合bean的生命周期，包扫描只不过是扫描特定注解的类，提取类的相关信息组装成BeanDefinition注册到容器中。
 
-在XmlBeanDefinitionReader中解析**```<context:component-scan />```**标签，扫描类组装BeanDefinition然后注册到容器中的操作在ClassPathBeanDefinitionScanner#doScan中实现。
+在XmlBeanDefinitionReader中解析```<context:component-scan />```标签，扫描类组装BeanDefinition然后注册到容器中的操作在ClassPathBeanDefinitionScanner#doScan中实现。
 
 测试：
 ```
