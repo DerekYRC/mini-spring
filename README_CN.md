@@ -1,6 +1,8 @@
 # <img src="assets/spring-framework.png" width="80" height="80"> mini-spring
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/DerekYRC/mini-spring)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![Stars](https://img.shields.io/github/stars/DerekYRC/mini-spring)](https://img.shields.io/github/stars/DerekYRC/mini-spring)
+[![Forks](https://img.shields.io/github/forks/DerekYRC/mini-spring)](https://img.shields.io/github/forks/DerekYRC/mini-spring)
 
 ## 关于
 * [English version](./README.md)
@@ -38,15 +40,22 @@
 
 #### 扩展篇
 * [PropertyPlaceholderConfigurer](#PropertyPlaceholderConfigurer)
-* [类型转换](#类型转换)
 * [包扫描](#包扫描)
-* [基于注解的依赖注入Autowired](#基于注解的依赖注入Autowired)
+* [基于注解@Autowired和@Value的依赖注入](#基于注解@Autowired和@Value的依赖注入)
+* [类型转换](#类型转换)
 
 #### 高级篇
 * [解决循环依赖问题](#解决循环依赖问题)
 
 ## 使用方法
 每个功能点对应一个分支，切换到功能点对应的分支了解新增的功能，增量改动点在[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)文件中描述。
+
+## 贡献
+欢迎Pull Request
+
+## 联系我
+欢迎探讨跟mini-spring和其他技术相关的问题，个人邮箱：**15521077528@163.com**
+
 
 ## 参考
 - [《Spring源码深度解析》](https://book.douban.com/subject/25866350/)

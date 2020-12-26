@@ -1,6 +1,8 @@
 # <img src="assets/spring-framework.png" width="80" height="80"> mini-spring
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/DerekYRC/mini-spring)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![Stars](https://img.shields.io/github/stars/DerekYRC/mini-spring)](https://img.shields.io/github/stars/DerekYRC/mini-spring)
+[![Forks](https://img.shields.io/github/forks/DerekYRC/mini-spring)](https://img.shields.io/github/forks/DerekYRC/mini-spring)
 
 ## About
 * [中文版](./README_CN.md)
@@ -38,15 +40,21 @@ If this project can help you, please give a **STAR, thank you!!!**
 
 #### Expanding 
 * [PropertyPlaceholderConfigurer](#PropertyPlaceholderConfigurer)
-* [Type conversion](#类型转换)
 * [Package scan](#包扫描)
-* [Autowired annotation](#基于注解的依赖注入Autowired)
+* [@Autowired and @Value annotation](#基于注解@Autowired和@Value的依赖注入)
+* [Type conversion](#类型转换)
 
 #### Advanced
 * [Solve the problem of circular dependencies](#解决循环依赖问题)
 
 ## Usage
 Each function point corresponds to a branch. Switch to the branch corresponding to the function point to see the new function. The incremental change point is described in the [changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md) file.
+
+## Contributing
+Any contributions you make are greatly appreciated.
+
+## Contact
+Please feel free to ask me any questions related to mini-spring and other technologies. My email is **15521077528@163.com**. 
 
 ## Reference
 - [《Spring源码深度解析》](https://book.douban.com/subject/25866350/)

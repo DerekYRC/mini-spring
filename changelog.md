@@ -976,7 +976,47 @@ public class PropertyPlaceholderConfigurerTest {
 }
 ```
 
+## 包扫描
+> 分支：package-scan
 
+结合bean的生命周期，包扫描只不过是扫描特定注解的类，提取类的相关信息组装成BeanDefinition注册到容器中。
+
+在XmlBeanDefinitionReader中解析**```<context:component-scan />```**标签，扫描类组装BeanDefinition然后注册到容器中的操作在ClassPathBeanDefinitionScanner#doScan中实现。
+
+测试：
+```
+@Component
+public class Car {
+
+}
+```
+package-scan.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <context:component-scan base-package="org.springframework.test.bean"/>
+
+</beans>
+```
+```
+public class PackageScanTest {
+
+	@Test
+	public void testScanPackage() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:package-scan.xml");
+
+		Car car = applicationContext.getBean("car", Car.class);
+		assertThat(car).isNotNull();
+	}
+}
+```
 
 
 
