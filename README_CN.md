@@ -51,11 +51,10 @@
 每个功能点对应一个分支，切换到功能点对应的分支了解新增的功能，增量改动点在[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)文件中描述。
 
 ## 贡献
-欢迎Pull Request
+欢迎Pull Request。
 
 ## 联系我
-欢迎探讨跟mini-spring和其他技术相关的问题，个人邮箱：**15521077528@163.com**
-
+欢迎探讨跟mini-spring和其他技术相关的问题，个人邮箱：**15521077528@163.com**。
 
 ## 参考
 - [《Spring源码深度解析》](https://book.douban.com/subject/25866350/)
