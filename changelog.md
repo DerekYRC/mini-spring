@@ -1018,11 +1018,58 @@ public class PackageScanTest {
 }
 ```
 
+## @Value注解
+> 分支：value-annotation
 
+注解@Value和@Autowired通过BeanPostProcessor处理。InstantiationAwareBeanPostProcessor增加postProcessPropertyValues方法，在bean实例化之后设置属性之前执行，查看AbstractAutowireCapableBeanFactory#doCreateBean方法。
 
+增加AutowiredAnnotationBeanPostProcessor用于处理注解@Value，@Autowired的处理在下一节实现，在ClassPathBeanDefinitionScanner#doScan将其添加到容器中。查看AutowiredAnnotationBeanPostProcessor#postProcessPropertyValues，其中字符解析器StringValueResolver在PropertyPlaceholderConfigurer中添加到BeanFactory中。
 
+测试：
+```
+@Component
+public class Car {
 
+	@Value("${brand}")
+	private String brand;
+}
+```
+value-annotation.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+    <bean class="org.springframework.beans.factory.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:car.properties" />
+    </bean>
+
+    <context:component-scan base-package="org.springframework.test.bean"/>
+
+</beans>
+```
+car.properties
+```
+brand=lamborghini
+```
+```
+public class ValueAnnotationTest {
+
+	@Test
+	public void testValueAnnotation() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:value-annotation.xml");
+
+		Car car = applicationContext.getBean("car", Car.class);
+		assertThat(car.getBrand()).isEqualTo("lamborghini");
+	}
+}
+
+```
 
 
 

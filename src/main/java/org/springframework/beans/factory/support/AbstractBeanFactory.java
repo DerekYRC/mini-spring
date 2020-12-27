@@ -1,18 +1,16 @@
 package org.springframework.beans.factory.support;
 
-import cn.hutool.core.lang.Assert;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.util.StringValueResolver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author derekyi
@@ -23,6 +21,8 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 	private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
 	private final Map<String, Object> factoryBeanObjectCache = new HashMap<>();
+
+	private final List<StringValueResolver> embeddedValueResolvers = new ArrayList<StringValueResolver>();
 
 	@Override
 	public Object getBean(String name) throws BeansException {
@@ -86,5 +86,17 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
 	public List<BeanPostProcessor> getBeanPostProcessors() {
 		return this.beanPostProcessors;
+	}
+
+	public void addEmbeddedValueResolver(StringValueResolver valueResolver) {
+		this.embeddedValueResolvers.add(valueResolver);
+	}
+
+	public String resolveEmbeddedValue(String value) {
+		String result = value;
+		for (StringValueResolver resolver : this.embeddedValueResolvers) {
+			result = resolver.resolveStringValue(result);
+		}
+		return result;
 	}
 }

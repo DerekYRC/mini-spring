@@ -41,7 +41,8 @@
 #### 扩展篇
 * [PropertyPlaceholderConfigurer](#PropertyPlaceholderConfigurer)
 * [包扫描](#包扫描)
-* [基于注解@Autowired和@Value的依赖注入](#基于注解@Autowired和@Value的依赖注入)
+* [@Value注解](#@Value注解)
+* [基于注解@Autowired的依赖注入](#基于注解@Autowired的依赖注入)
 * [类型转换](#类型转换)
 
 #### 高级篇
