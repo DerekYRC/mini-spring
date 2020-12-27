@@ -128,6 +128,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		return getBeanFactory().getBeansOfType(type);
 	}
 
+	public <T> T getBean(Class<T> requiredType) throws BeansException {
+		return getBeanFactory().getBean(requiredType);
+	}
+
 	public Object getBean(String name) throws BeansException {
 		return getBeanFactory().getBean(name);
 	}
