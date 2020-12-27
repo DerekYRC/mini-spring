@@ -1,4 +1,4 @@
- # IOC
+ # 基础篇：IoC
  ## 最简单的bean容器
  > 分支：simple-bean-container
 
@@ -661,6 +661,8 @@ org.springframework.test.common.event.CustomEventListener
 org.springframework.test.common.event.ContextClosedEventListener
 ```
 
+# 基础篇：AOP
+
 ## 切点表达式
 > 分支：pointcut-expression
 
@@ -930,6 +932,8 @@ public class AutoProxyTest {
 	}
 }
 ```
+
+# 扩展篇
 
 ## PropertyPlaceholderConfigurer
 > 分支：property-placeholder-configurer
