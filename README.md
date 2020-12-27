@@ -41,8 +41,8 @@ If this project can help you, please give a **STAR, thank you!!!**
 #### Expanding 
 * [PropertyPlaceholderConfigurer](#PropertyPlaceholderConfigurer)
 * [Package scan](#包扫描)
-* [@Value annotation](#Value annotation)
-* [@Autowired annotation](#Autowired annotation)
+* [Value annotation](#Value annotation)
+* [Autowired annotation](#Autowired annotation)
 * [Type conversion](#类型转换)
 
 #### Advanced
