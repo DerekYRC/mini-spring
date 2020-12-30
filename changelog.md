@@ -1121,13 +1121,23 @@ public class AutowiredAnnotationTest {
 	}
 }
 ```
-## 为代理bean填充属性
+## bug fix：没有为代理bean设置属性（discovered and fixed by @kerwin89）
 > 分支: populate-proxy-bean-with-property-values
 
-DefaultAdvisorAutoProxyCreator#postProcessBeforeInstantiation的内容挪到postProcessAfterInitialization方法中, postProcessBeforeInstantiation返回null
+问题现象：没有为代理bean设置属性
 
-用bean接受AbstractAutowireCapableBeanFactory#initializeBean的返回值
+问题原因：织入逻辑在InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation中执行，而该方法如果返回非null，会导致"短路"，不会执行后面的设置属性逻辑。因此如果该方法中返回代理bean后，不会为代理bean设置属性。
 
+修复方案：跟spring保持一致，将织入逻辑迁移到BeanPostProcessor#postProcessAfterInitialization，即将DefaultAdvisorAutoProxyCreator#postProcessBeforeInstantiation的内容迁移到DefaultAdvisorAutoProxyCreator#postProcessAfterInitialization中。
+
+顺便完善spring的扩展机制，为InstantiationAwareBeanPostProcessor增加postProcessAfterInstantiation方法，该方法在bean实例化之后设置属性之前执行。
+
+至此，bean的生命周期比较完整了，如下：
+
+![](./assets/populate-proxy-bean-with-property-values.png)
+
+测试：
+populate-proxy-bean-with-property-values.xml
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -1159,17 +1169,29 @@ DefaultAdvisorAutoProxyCreator#postProcessBeforeInstantiation的内容挪到post
 </beans>
 ```
 ```
+public class WorldServiceImpl implements WorldService {
+
+	private String name;
+
+	@Override
+	public void explode() {
+		System.out.println("The " + name + " is going to explode");
+	}
+
+	//setter and getter
+}
+```
+```
 public class AutoProxyTest {
 
 	@Test
-	public void testAutoProxy() throws Exception {
-		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:auto-proxy.xml");
+	public void testPopulateProxyBeanWithPropertyValues() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:populate-proxy-bean-with-property-values.xml");
 
 		//获取代理对象
 		WorldService worldService = applicationContext.getBean("worldService", WorldService.class);
 		worldService.explode();
-		WorldService worldService1 = applicationContext.getBean("worldService", WorldService.class);
-		assertThat(worldService == worldService1).isTrue();
+		assertThat(worldService.getName()).isEqualTo("earth");
 	}
 }
 ```

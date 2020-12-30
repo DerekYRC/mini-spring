@@ -19,7 +19,15 @@ public class AutoProxyTest {
 		//获取代理对象
 		WorldService worldService = applicationContext.getBean("worldService", WorldService.class);
 		worldService.explode();
-		WorldService worldService1 = applicationContext.getBean("worldService", WorldService.class);
-		assertThat(worldService == worldService1).isTrue();
+	}
+
+	@Test
+	public void testPopulateProxyBeanWithPropertyValues() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:populate-proxy-bean-with-property-values.xml");
+
+		//获取代理对象
+		WorldService worldService = applicationContext.getBean("worldService", WorldService.class);
+		worldService.explode();
+		assertThat(worldService.getName()).isEqualTo("earth");
 	}
 }

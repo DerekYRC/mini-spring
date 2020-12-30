@@ -6,19 +6,19 @@ package org.springframework.test.service;
  */
 public class WorldServiceImpl implements WorldService {
 
-    private String name;
+	private String name;
 
-    public String getName() {
-        return name;
-    }
+	@Override
+	public void explode() {
+		System.out.println("The " + name + " is going to explode");
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Override
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public void explode() {
-        System.out.println("The Earth is going to explode");
-        System.out.println("name: " + getName());
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 }

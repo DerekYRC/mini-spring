@@ -23,28 +23,6 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
 	private DefaultListableBeanFactory beanFactory;
 
 	@Override
-	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
-
-		return null;
-	}
-
-	private boolean isInfrastructureClass(Class<?> beanClass) {
-		return Advice.class.isAssignableFrom(beanClass)
-				|| Pointcut.class.isAssignableFrom(beanClass)
-				|| Advisor.class.isAssignableFrom(beanClass);
-	}
-
-	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		this.beanFactory = (DefaultListableBeanFactory) beanFactory;
-	}
-
-	@Override
-	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		return bean;
-	}
-
-	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		//避免死循环
 		if (isInfrastructureClass(bean.getClass())) {
@@ -69,6 +47,32 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
 		} catch (Exception ex) {
 			throw new BeansException("Error create proxy bean for: " + beanName, ex);
 		}
+		return bean;
+	}
+
+	private boolean isInfrastructureClass(Class<?> beanClass) {
+		return Advice.class.isAssignableFrom(beanClass)
+				|| Pointcut.class.isAssignableFrom(beanClass)
+				|| Advisor.class.isAssignableFrom(beanClass);
+	}
+
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = (DefaultListableBeanFactory) beanFactory;
+	}
+
+	@Override
+	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+		return null;
+	}
+
+	@Override
+	public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+		return true;
+	}
+
+	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		return bean;
 	}
 
