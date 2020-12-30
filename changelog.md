@@ -1121,7 +1121,58 @@ public class AutowiredAnnotationTest {
 	}
 }
 ```
+## 为代理bean填充属性
+> 分支: populate-proxy-bean-with-property-values
 
+DefaultAdvisorAutoProxyCreator#postProcessBeforeInstantiation的内容挪到postProcessAfterInitialization方法中, postProcessBeforeInstantiation返回null
+
+用bean接受AbstractAutowireCapableBeanFactory#initializeBean的返回值
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <bean id="worldService" class="org.springframework.test.service.WorldServiceImpl">
+        <property name="name" value="earth"/>
+    </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
+    <bean id="pointcutAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* org.springframework.test.service.WorldService.explode(..))"/>
+        <property name="advice" ref="methodInterceptor"/>
+    </bean>
+
+
+    <bean id="methodInterceptor" class="org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
+        <property name="advice" ref="beforeAdvice"/>
+    </bean>
+
+    <bean id="beforeAdvice" class="org.springframework.test.common.WorldServiceBeforeAdvice"/>
+
+</beans>
+```
+```
+public class AutoProxyTest {
+
+	@Test
+	public void testAutoProxy() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:auto-proxy.xml");
+
+		//获取代理对象
+		WorldService worldService = applicationContext.getBean("worldService", WorldService.class);
+		worldService.explode();
+		WorldService worldService1 = applicationContext.getBean("worldService", WorldService.class);
+		assertThat(worldService == worldService1).isTrue();
+	}
+}
+```
 
 
 
