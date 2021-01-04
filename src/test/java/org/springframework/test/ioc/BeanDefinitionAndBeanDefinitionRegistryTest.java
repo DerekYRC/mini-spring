@@ -16,6 +16,9 @@ public class BeanDefinitionAndBeanDefinitionRegistryTest {
 		BeanDefinition beanDefinition = new BeanDefinition(HelloService.class);
 		beanFactory.registerBeanDefinition("helloService", beanDefinition);
 
+		// 在这个测试用SingletonBeanRegistry 月 DefaultSingletonBeanFactory是无用的
+		HelloService helloService1 = (HelloService) beanFactory.getSingleton("helloService");
+		helloService1.sayHello();
 		HelloService helloService = (HelloService) beanFactory.getBean("helloService");
 		helloService.sayHello();
 	}
