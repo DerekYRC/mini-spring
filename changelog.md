@@ -1308,7 +1308,7 @@ public class StringToBooleanConverter implements GenericConverter {
 Boolean flag = new StringToBooleanConverter().convert("true", String.class, Boolean.class);
 ```
 
-ConversionService是类型转换体系的核心接口，将以上三种类型转换器整合到一起，GenericConversionService是其实现类，DefaultConversionService在GenericConversionService是其实现类的基础上添加内置转换器。
+ConversionService是类型转换体系的核心接口，将以上三种类型转换器整合到一起，GenericConversionService是其实现类，DefaultConversionService在GenericConversionService的基础上添加内置转换器。
 
 测试见TypeConversionFirstPartTest。
 
