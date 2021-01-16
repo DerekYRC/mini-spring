@@ -43,10 +43,14 @@ If this project can help you, please give a **STAR, thank you!!!**
 * [Package scan](#包扫描)
 * [Value annotation](#Value)
 * [Autowired annotation](#Autowired)
-* [Type conversion](#类型转换)
+* [Type conversion(first part)](#类型转换一)
+* [Type conversion(second part)](#类型转换二)
 
 #### Advanced
 * [Solve the problem of circular dependencies](#解决循环依赖问题)
+
+#### bug fix
+* [populate proxy bean with property values(discovered and fixed by kerwin89)](#没有为代理bean设置属性)
 
 ## Usage
 Each function point corresponds to a branch. Switch to the branch corresponding to the function point to see the new function. The incremental change point is described in the [changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md) file.
