@@ -1196,9 +1196,119 @@ public class AutoProxyTest {
 }
 ```
 
+## 类型转换（一）
+> 分支：type-conversion-first-part
 
+spring在org.springframework.core.convert.converter包中定义了三种类型转换器接口：Converter、ConverterFactory、GenericConverter。
 
+### 一、Converter
+```
+public interface Converter<S, T> {
 
+	/**
+	 * 类型转换
+	 */
+	T convert(S source);
+}
+```
+Converter能将S类型的对象转换为T类型的对象，比如将String类型的对象转换为Integer类型的对象的实现类：
+```
+public class StringToIntegerConverter implements Converter<String, Integer> {
+	@Override
+	public Integer convert(String source) {
+		return Integer.valueOf(source);
+	}
+}
+```
+使用：
+```
+Integer num = new StringToIntegerConverter().convert("8888");
+```
 
+### 二、ConverterFactory
+```
+public interface ConverterFactory<S, R> {
 
+	<T extends R> Converter<S, T> getConverter(Class<T> targetType);
+}
+```
+Converter<S,T>接口适合一对一的类型转换，如果要将String类型转换为Ineger/Long/Float/Double/Decimal等类型，就要实现一系列的StringToInteger/StringToLongConverter/StringToFloatConverter转换器，非常不优雅。
+
+ConverterFactory接口则适合一对多的类型转换，可以将一种类型转换为另一种类型及其子类。比如将String类型转换为Ineger/Long/Float/Double/Decimal等Number类型时，只需定义一个ConverterFactory转换器：
+```
+public class StringToNumberConverterFactory implements ConverterFactory<String, Number> {
+
+	@Override
+	public <T extends Number> Converter<String, T> getConverter(Class<T> targetType) {
+		return new StringToNumber<T>(targetType);
+	}
+
+	private static final class StringToNumber<T extends Number> implements Converter<String, T> {
+
+		private final Class<T> targetType;
+
+		public StringToNumber(Class<T> targetType) {
+			this.targetType = targetType;
+		}
+
+		@Override
+		public T convert(String source) {
+			if (source.length() == 0) {
+				return null;
+			}
+
+			if (targetType.equals(Integer.class)) {
+				return (T) Integer.valueOf(source);
+			} else if (targetType.equals(Long.class)) {
+				return (T) Long.valueOf(source);
+			}
+			//TODO 其他数字类型
+
+			else {
+				throw new IllegalArgumentException(
+						"Cannot convert String [" + source + "] to target class [" + targetType.getName() + "]");
+			}
+		}
+	}
+
+}
+```
+使用：
+```
+StringToNumberConverterFactory converterFactory = new StringToNumberConverterFactory();
+Converter<String, Integer> stringToIntegerConverter = converterFactory.getConverter(Integer.class);
+Integer num = stringToIntegerConverter.convert("8888");
+```
+
+### 三、GenericConverter
+```
+public interface GenericConverter {
+
+	Set<ConvertiblePair> getConvertibleTypes();
+
+	Object convert(Object source, Class sourceType, Class targetType);
+}
+```
+String类型转换为Boolean类型的实现类：
+```
+public class StringToBooleanConverter implements GenericConverter {
+	@Override
+	public Set<ConvertiblePair> getConvertibleTypes() {
+		return Collections.singleton(new ConvertiblePair(String.class, Boolean.class));
+	}
+
+	@Override
+	public Object convert(Object source, Class sourceType, Class targetType) {
+		return Boolean.valueOf((String) source);
+	}
+}
+```
+使用:
+```
+Boolean flag = new StringToBooleanConverter().convert("true", String.class, Boolean.class);
+```
+
+ConversionService是类型转换体系的核心接口，将以上三种类型转换器整合到一起，GenericConversionService是其实现类，DefaultConversionService在GenericConversionService是其实现类的基础上添加内置转换器。
+
+测试见TypeConversionFirstPartTest。
 
