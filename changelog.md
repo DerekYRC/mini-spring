@@ -1312,3 +1312,80 @@ ConversionService是类型转换体系的核心接口，将以上三种类型转
 
 测试见TypeConversionFirstPartTest。
 
+## 类型转换（二）
+> 分支：type-conversion-second-part
+
+上一节实现了spring中的类型转换体系，本节将类型转换的能力整合到容器中。
+
+为了方便使用，提供了创建ConversionService的FactoryBean——ConversionServiceFactoryBean。
+
+如果有定义ConversionService，在AbstractApplicationContext#finishBeanFactoryInitialization方法中设置到容器中。
+
+类型转换的时机有两个：
+
+- 为bean填充属性时，见AbstractAutowireCapableBeanFactory#applyPropertyValues 
+- 处理@Value注解时，见AutowiredAnnotationBeanPostProcessor#postProcessPropertyValues
+
+你可能会有疑问，如果没有定义ConversionService，是怎么进行基本类型的转换的？其实spring为了向下兼容保留了一套比较旧的类型转换机制，没有定义ConversionService时会使用其进行基本类型的转换工作，不必关注旧的类型转换机制。
+
+测试：
+```
+public class Car {
+
+	private int price;
+
+	private LocalDate produceDate;
+}
+```
+```
+public class StringToLocalDateConverter implements Converter<String, LocalDate> {
+
+	private final DateTimeFormatter DATE_TIME_FORMATTER;
+
+	public StringToLocalDateConverter(String pattern) {
+		DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(pattern);
+	}
+
+	@Override
+	public LocalDate convert(String source) {
+		return LocalDate.parse(source, DATE_TIME_FORMATTER);
+	}
+}
+```
+type-conversion-second-part.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <bean id="car" class="org.springframework.test.bean.Car">
+        <property name="price" value="1000000"/>
+        <property name="produceDate" value="2021-01-01"/>
+    </bean>
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters" ref="converters"/>
+    </bean>
+
+    <bean id="converters" class="org.springframework.test.common.ConvertersFactoryBean"/>
+
+</beans>
+```
+```
+public class TypeConversionSecondPartTest {
+
+	@Test
+	public void testConversionService() throws Exception {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:type-conversion-second-part.xml");
+
+		Car car = applicationContext.getBean("car", Car.class);
+		assertThat(car.getPrice()).isEqualTo(1000000);
+		assertThat(car.getProduceDate()).isEqualTo(LocalDate.of(2021, 1, 1));
+	}
+}
+```
