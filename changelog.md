@@ -1389,3 +1389,7 @@ public class TypeConversionSecondPartTest {
 	}
 }
 ```
+
+## 解决循环依赖问题（一）：没有代理对象
+> 分支：circular-reference-without-proxy-bean
+
