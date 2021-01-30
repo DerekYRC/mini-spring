@@ -1,4 +1,4 @@
- # [基础篇：IoC](#基础篇：IoC)
+ # [基础篇：IoC](#基础篇IoC)
  ## [最简单的bean容器](#最简单的bean容器)
  > 分支：simple-bean-container
 
@@ -661,9 +661,9 @@ org.springframework.test.common.event.CustomEventListener
 org.springframework.test.common.event.ContextClosedEventListener
 ```
 
-# 基础篇：AOP
+# [基础篇：AOP](#基础篇AOP)
 
-## 切点表达式
+## [切点表达式](#切点表达式)
 > 分支：pointcut-expression
 
 Joinpoint，织入点，指需要执行代理操作的某个类的某个方法(仅支持方法级别的JoinPoint)；Pointcut是JoinPoint的表述方式，能捕获JoinPoint。
@@ -694,7 +694,7 @@ public class PointcutExpressionTest {
 }
 ```
 
-## 基于JDK的动态代理
+## [基于JDK的动态代理](#基于JDK的动态代理)
 > 分支：jdk-dynamic-proxy
 
 AopProxy是获取代理对象的抽象接口，JdkDynamicAopProxy的基于JDK动态代理的具体实现。TargetSource，被代理对象的封装。MethodInterceptor，方法拦截器，是AOP Alliance的"公民"，顾名思义，可以拦截方法，可在被代理执行的方法前后增加代理行为。
@@ -721,7 +721,7 @@ public class DynamicProxyTest {
 }
 ```
 
-## 基于CGLIB的动态代理
+## [基于CGLIB的动态代理](#基于CGLIB的动态代理)
 > 分支：cglib-dynamic-proxy
 
 基于CGLIB的动态代理实现逻辑也比较简单，查看CglibAopProxy。与基于JDK的动态代理在运行期间为接口生成对象的代理对象不同，基于CGLIB的动态代理能在运行期间动态构建字节码的class文件，为类生成子类，因此被代理类不需要继承自任何接口。
@@ -753,7 +753,7 @@ public class DynamicProxyTest {
 }
 ```
 
-## AOP代理工厂
+## [AOP代理工厂](#AOP代理工厂)
 > 分支：proxy-factory
 
 增加AOP代理工厂ProxyFactory，由AdvisedSupport#proxyTargetClass属性决定使用JDK动态代理还是CGLIB动态代理。
@@ -792,7 +792,7 @@ public class DynamicProxyTest {
 }
 ```
 
-## 几种常用的Advice：BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice...
+## [几种常用的Advice：BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice...](#几种常用的AdviceBeforeAdviceAfterAdviceAfterReturningAdviceThrowsAdvice)
 > 分支： common-advice
 
 Spring将AOP联盟中的Advice细化出各种类型的Advice，常用的有BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice，我们可以通过扩展MethodInterceptor来实现。
@@ -842,7 +842,7 @@ public class DynamicProxyTest {
 }
 ```
 
-## PointcutAdvisor：Pointcut和Advice的组合
+## PointcutAdvisor：Pointcut和Advice的组合(#PointcutAdvisorPointcut和Advice的组合)
 > 分支：pointcut-advisor
 
 Advisor是包含一个Pointcut和一个Advice的组合，Pointcut用于捕获JoinPoint，Advice决定在JoinPoint执行某种操作。实现了一个支持aspectj表达式的AspectJExpressionPointcutAdvisor。
@@ -878,7 +878,7 @@ public class DynamicProxyTest {
 }
 ```
 
-## 动态代理融入bean生命周期
+## [动态代理融入bean生命周期](#动态代理融入bean生命周期)
 > 分支：auto-proxy
 
 结合前面讲解的bean的生命周期，BeanPostProcessor处理阶段可以修改和替换bean，正好可以在此阶段返回代理对象替换原对象。不过我们引入一种特殊的BeanPostProcessor——InstantiationAwareBeanPostProcessor，如果InstantiationAwareBeanPostProcessor处理阶段返回代理对象，会导致短路，不会继续走原来的创建bean的流程，具体实现查看AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation。

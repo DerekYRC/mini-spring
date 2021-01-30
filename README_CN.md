@@ -14,7 +14,7 @@
 
 ## 功能
 #### 基础篇
-* [IoC](#Ioc)
+* [IoC](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#基础篇IoC)
     * [实现一个简单的容器](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#最简单的bean容器)
     * [BeanDefinition和BeanDefinitionRegistry](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#BeanDefinition和BeanDefinitionRegistry)
     * [Bean实例化策略InstantiationStrategy](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#Bean实例化策略InstantiationStrategy)
@@ -29,30 +29,30 @@
     * [bean作用域，增加prototype的支持](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#bean作用域增加prototype的支持)
     * [FactoryBean](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#FactoryBean)
     * [容器事件和事件监听器](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#容器事件和事件监听器)
-* [AOP](#AOP)
-    * [切点表达式](#切点表达式)
-    * [基于JDK的动态代理](#基于JDK的动态代理)
-    * [基于CGLIB的动态代理](#基于CGLIB的动态代理)
-    * [AOP代理工厂ProxyFactory](#AOP代理工厂ProxyFactory)
-    * [几种常用的Advice: BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice](#几种常用的Advice)
-    * [PointcutAdvisor：Pointcut和Advice的组合](#PointcutAdvisor：Pointcut和Advice的组合)
-    * [动态代理融入bean生命周期](#动态代理融入bean生命周期)
+* [AOP](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#基础篇AOP)
+    * [切点表达式](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#切点表达式)
+    * [基于JDK的动态代理](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#基于JDK的动态代理)
+    * [基于CGLIB的动态代理](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#基于CGLIB的动态代理)
+    * [AOP代理工厂ProxyFactory](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#AOP代理工厂)
+    * [几种常用的Advice: BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#几种常用的AdviceBeforeAdviceAfterAdviceAfterReturningAdviceThrowsAdvice)
+    * [PointcutAdvisor：Pointcut和Advice的组合](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#PointcutAdvisorPointcut和Advice的组合)
+    * [动态代理融入bean生命周期](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#动态代理融入bean生命周期)
     
 
 #### 扩展篇
-* [PropertyPlaceholderConfigurer](#PropertyPlaceholderConfigurer)
-* [包扫描](#包扫描)
-* [@Value注解](#@Value注解)
-* [基于注解@Autowired的依赖注入](#基于注解@Autowired的依赖注入)
-* [类型转换（一）](#类型转换一)
-* [类型转换（二）](#类型转换二)
+* [PropertyPlaceholderConfigurer](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
+* [包扫描](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
+* [@Value注解](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
+* [基于注解@Autowired的依赖注入](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
+* [类型转换（一）](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
+* [类型转换（二）](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
 
 #### 高级篇
-* [解决循环依赖问题（一）：没有代理对象](#解决循环依赖问题（一）：没有代理对象)
-* [解决循环依赖问题（二）：有代理对象](#解决循环依赖问题（二）：有代理对象)
+* [解决循环依赖问题（一）：没有代理对象](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
+* [解决循环依赖问题（二）：有代理对象](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
 
 #### bug fix
-* [没有为代理bean设置属性(discovered and fixed by kerwin89)](#没有为代理bean设置属性)
+* [没有为代理bean设置属性(discovered and fixed by kerwin89)](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
 
 ## 使用方法
 每个功能点对应一个分支，切换到功能点对应的分支了解新增的功能，增量改动点在[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)文件中描述。
