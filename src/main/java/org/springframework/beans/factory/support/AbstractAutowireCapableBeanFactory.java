@@ -98,12 +98,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		//注册有销毁方法的bean
 		registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
 
+		Object exposedObject = bean;
 		if (beanDefinition.isSingleton()) {
 			//如果有代理对象，此处获取代理对象
-			Object exposedObject = getSingleton(beanName);
+			exposedObject = getSingleton(beanName);
 			addSingleton(beanName, exposedObject);
 		}
-		return bean;
+		return exposedObject;
 	}
 
 	protected Object getEarlyBeanReference(String beanName, BeanDefinition beanDefinition, Object bean) {

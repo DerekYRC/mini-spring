@@ -1433,7 +1433,7 @@ A依赖B，B又依赖A，循环依赖。容器加载时会执行依赖流程：
 
 死循环直至栈溢出。
 
-解决该问题的关键在于何时将实例化后的bean放进容器中，设置属性前还是设置属性后。现有的执行流程，bean实例化后并且设置属性后会被放进singletonObjects单例缓存中。如果我们调整一下顺序，当bean实例化后就放进singletonObjects单例缓存中，然后再设置属性，就能解决上面的循环依赖问题，执行流程变为：
+解决该问题的关键在于何时将实例化后的bean放进容器中，设置属性前还是设置属性后。现有的执行流程，bean实例化后并且设置属性后会被放进singletonObjects单例缓存中。如果我们调整一下顺序，当bean实例化后就放进singletonObjects单例缓存中，提前暴露引用，然后再设置属性，就能解决上面的循环依赖问题，执行流程变为：
 
 - 步骤一：getBean(a)，检查singletonObjects是否包含a，singletonObjects不包含a，实例化A放进singletonObjects，设置属性b，发现依赖B，尝试getBean(b)
 - 步骤二：getBean(b)，检查singletonObjects是否包含b，singletonObjects不包含a，实例化B放进singletonObjects，设置属性a，发现依赖A，尝试getBean(a)
@@ -1452,6 +1452,17 @@ A依赖B，B又依赖A，循环依赖。容器加载时会执行依赖流程：
 ## 解决循环依赖问题（二）：有代理对象
 > 分支：circular-reference-with-proxy-bean
 
+解决有代理对象时的循环依赖问题，需要提前暴露代理对象的引用，而不是暴露实例化后的bean的引用（这是上节的遗留问题的原因，应该提前暴露A的代理对象的引用）。
+
+spring中用singletonFactories（一般称第三级缓存）解决有代理对象时的循环依赖问题。在实例化后提前暴露代理对象的引用（见AbstractAutowireCapableBeanFactory#doCreateBean方法第6行）。
+
+getBean()时依次检查一级缓存singletonObjects、二级缓存earlySingletonObjects和三级缓存singletonFactories中是否包含该bean。如果三级缓存中包含该bean，则挪至二级缓存中，然后直接返回该bean。见AbstractBeanFactory#getBean方法第1行。
+
+最后将代理bean放进一级缓存singletonObjects，见AbstractAutowireCapableBeanFactory第104行。
+
+单测见CircularReferenceWithProxyBeanTest。
+
+## =======================不容易啊，完美撒花=======================
 
 
 
