@@ -842,7 +842,7 @@ public class DynamicProxyTest {
 }
 ```
 
-## PointcutAdvisor：Pointcut和Advice的组合(#PointcutAdvisorPointcut和Advice的组合)
+## [PointcutAdvisor：Pointcut和Advice的组合](#PointcutAdvisorPointcut和Advice的组合)
 > 分支：pointcut-advisor
 
 Advisor是包含一个Pointcut和一个Advice的组合，Pointcut用于捕获JoinPoint，Advice决定在JoinPoint执行某种操作。实现了一个支持aspectj表达式的AspectJExpressionPointcutAdvisor。
@@ -935,7 +935,7 @@ public class AutoProxyTest {
 
 # 扩展篇
 
-## PropertyPlaceholderConfigurer
+## [PropertyPlaceholderConfigurer](#PropertyPlaceholderConfigurer)
 > 分支：property-placeholder-configurer
 
 经常需要将配置信息配置在properties文件中，然后在XML文件中以占位符的方式引用。
@@ -980,7 +980,7 @@ public class PropertyPlaceholderConfigurerTest {
 }
 ```
 
-## 包扫描
+## [包扫描](#包扫描)
 > 分支：package-scan
 
 结合bean的生命周期，包扫描只不过是扫描特定注解的类，提取类的相关信息组装成BeanDefinition注册到容器中。
@@ -1022,7 +1022,7 @@ public class PackageScanTest {
 }
 ```
 
-## @Value注解
+## [@Value注解](#Value注解)
 > 分支：value-annotation
 
 注解@Value和@Autowired通过BeanPostProcessor处理。InstantiationAwareBeanPostProcessor增加postProcessPropertyValues方法，在bean实例化之后设置属性之前执行，查看AbstractAutowireCapableBeanFactory#doCreateBean方法。
@@ -1075,7 +1075,7 @@ public class ValueAnnotationTest {
 
 ```
 
-## @Autowired注解
+## [@Autowired注解](#Autowired注解)
 > 分支：autowired-annotation
 
 @Autowired注解的处理见AutowiredAnnotationBeanPostProcessor#postProcessPropertyValues
@@ -1121,7 +1121,7 @@ public class AutowiredAnnotationTest {
 	}
 }
 ```
-## bug fix：没有为代理bean设置属性（discovered and fixed by @kerwin89）
+## [bug fix：没有为代理bean设置属性（discovered and fixed by @kerwin89）](#bug-fix没有为代理bean设置属性discovered-and-fixed-by-kerwin89)
 > 分支: populate-proxy-bean-with-property-values
 
 问题现象：没有为代理bean设置属性
@@ -1196,7 +1196,7 @@ public class AutoProxyTest {
 }
 ```
 
-## 类型转换（一）
+## [类型转换（一）](#类型转换一)
 > 分支：type-conversion-first-part
 
 spring在org.springframework.core.convert.converter包中定义了三种类型转换器接口：Converter、ConverterFactory、GenericConverter。
@@ -1312,7 +1312,7 @@ ConversionService是类型转换体系的核心接口，将以上三种类型转
 
 测试见TypeConversionFirstPartTest。
 
-## 类型转换（二）
+## [类型转换（二）](#类型转换二)
 > 分支：type-conversion-second-part
 
 上一节实现了spring中的类型转换体系，本节将类型转换的能力整合到容器中。
@@ -1390,7 +1390,7 @@ public class TypeConversionSecondPartTest {
 }
 ```
 
-## 解决循环依赖问题（一）：没有代理对象
+## [解决循环依赖问题（一）：没有代理对象](#解决循环依赖问题一没有代理对象)
 > 分支：circular-reference-without-proxy-bean
 
 虽然放在高级篇，其实解决循环依赖问题的方法非常简单。
@@ -1449,7 +1449,7 @@ A依赖B，B又依赖A，循环依赖。容器加载时会执行依赖流程：
 
 下一节填坑。
 
-## 解决循环依赖问题（二）：有代理对象
+## [解决循环依赖问题（二）：有代理对象](#解决循环依赖问题二有代理对象)
 > 分支：circular-reference-with-proxy-bean
 
 解决有代理对象时的循环依赖问题，需要提前暴露代理对象的引用，而不是暴露实例化后的bean的引用（这是上节的遗留问题的原因，应该提前暴露A的代理对象的引用）。

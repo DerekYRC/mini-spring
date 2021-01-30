@@ -40,19 +40,19 @@
     
 
 #### 扩展篇
-* [PropertyPlaceholderConfigurer](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
-* [包扫描](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
-* [@Value注解](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
-* [基于注解@Autowired的依赖注入](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
-* [类型转换（一）](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
-* [类型转换（二）](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
+* [PropertyPlaceholderConfigurer](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#PropertyPlaceholderConfigurer)
+* [包扫描](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#包扫描)
+* [@Value注解](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#Value注解)
+* [基于注解@Autowired的依赖注入](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#Autowired注解)
+* [类型转换（一）](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#类型转换一)
+* [类型转换（二）](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#类型转换二)
 
 #### 高级篇
-* [解决循环依赖问题（一）：没有代理对象](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
-* [解决循环依赖问题（二）：有代理对象](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
+* [解决循环依赖问题（一）：没有代理对象](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#解决循环依赖问题一没有代理对象)
+* [解决循环依赖问题（二）：有代理对象](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#解决循环依赖问题二有代理对象)
 
 #### bug fix
-* [没有为代理bean设置属性(discovered and fixed by kerwin89)](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
+* [没有为代理bean设置属性(discovered and fixed by kerwin89)](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#bug-fix没有为代理bean设置属性discovered-and-fixed-by-kerwin89)
 
 ## 使用方法
 每个功能点对应一个分支，切换到功能点对应的分支了解新增的功能，增量改动点在[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)文件中描述。
