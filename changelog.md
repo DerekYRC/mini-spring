@@ -514,7 +514,7 @@ public class AwareInterfaceTest {
 }
 ```
 
-## bean作用域，增加prototype的支持
+## [bean作用域，增加prototype的支持](#bean作用域)
 > 分支：prototype-bean
 
 每次向容器获取prototype作用域bean时，容器都会创建一个新的实例。在BeanDefinition中增加描述bean的作用域的字段scope/singleton/prototype，创建prototype作用域bean时（AbstractAutowireCapableBeanFactory#doCreateBean），不往singletonObjects中增加该bean。prototype作用域bean不执行销毁方法，查看AbstractAutowireCapableBeanFactory#registerDisposableBeanIfNecessary方法。
