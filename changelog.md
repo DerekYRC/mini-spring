@@ -1,5 +1,5 @@
- # 基础篇：IoC
- ## 最简单的bean容器
+ # [基础篇：IoC](#基础篇：IoC)
+ ## [最简单的bean容器](#最简单的bean容器)
  > 分支：simple-bean-container
 
 定义一个简单的bean容器BeanFactory，内部包含一个map用以保存bean，只有注册bean和获取bean两个方法
@@ -39,7 +39,7 @@ public class SimpleBeanContainerTest {
 }
 ```
 
-## BeanDefinition和BeanDefinitionRegistry
+## [BeanDefinition和BeanDefinitionRegistry](#BeanDefinition和BeanDefinitionRegistry)
 > 分支：bean-definition-and-bean-definition-registry
 
 主要增加如下类：
@@ -74,7 +74,7 @@ class HelloService {
 }
 ```
 
-## Bean实例化策略InstantiationStrategy
+## [Bean实例化策略InstantiationStrategy](#Bean实例化策略InstantiationStrategy)
 > 分支：instantiation-strategy
 
 现在bean是在AbstractAutowireCapableBeanFactory.doCreateBean方法中用beanClass.newInstance()来实例化，仅适用于bean有无参构造函数的情况。
@@ -85,7 +85,7 @@ class HelloService {
 - SimpleInstantiationStrategy，使用bean的构造函数来实例化
 - CglibSubclassingInstantiationStrategy，使用CGLIB动态生成子类
 
-## 为bean填充属性
+## [为bean填充属性](#为bean填充属性)
 > 分支：populate-bean-with-property-values
 
 在BeanDefinition中增加和bean属性对应的PropertyValues，实例化bean之后，为bean填充属性(AbstractAutowireCapableBeanFactory#applyPropertyValues)。
@@ -111,7 +111,7 @@ public class PopulateBeanWithPropertyValuesTest {
 }
 ```
 
-## 为bean注入bean
+## [为bean注入bean](#为bean注入bean)
 > 分支：populate-bean-with-bean
 
 增加BeanReference类，包装一个bean对另一个bean的引用。实例化beanA后填充属性时，若PropertyValue#value为BeanReference，引用beanB，则先去实例化beanB。
@@ -176,7 +176,7 @@ public class PopulateBeanWithPropertyValuesTest {
 }
 ```
 
-## 资源和资源加载器
+## [资源和资源加载器](#资源和资源加载器)
 > 分支：resource-and-resource-loader
 
 Resource是资源的抽象和访问接口，简单写了三个实现类
@@ -222,7 +222,7 @@ public class ResourceAndResourceLoaderTest {
 }
 ```
 
-## 在xml文件中定义bean
+## [在xml文件中定义bean](#在xml文件中定义bean)
 > 分支：xml-file-define-bean
 
 有了资源加载器，就可以在xml格式配置文件中声明式地定义bean的信息，资源加载器读取xml文件，解析出bean的信息，然后往容器中注册BeanDefinition。
@@ -280,7 +280,7 @@ public class XmlFileDefineBeanTest {
 }
 ```
 
-## BeanFactoryPostProcess和BeanPostProcessor
+## [BeanFactoryPostProcess和BeanPostProcessor](#BeanFactoryPostProcess和BeanPostProcessor)
 > 分支：bean-factory-post-processor-and-bean-post-processor
 
 BeanFactoryPostProcess和BeanPostProcessor是spring框架中具有重量级地位的两个接口，理解了这两个接口的作用，基本就理解spring的核心原理了。为了降低理解难度分两个小节实现。
@@ -345,7 +345,7 @@ public class BeanFactoryProcessorAndBeanPostProcessorTest {
 }
 ```
 
-## 应用上下文ApplicationContext
+## [应用上下文ApplicationContext](#应用上下文ApplicationContext)
 > 分支：application-context
 
 应用上下文ApplicationContext是spring中较之于BeanFactory更为先进的IOC容器，ApplicationContext除了拥有BeanFactory的所有功能外，还支持特殊类型bean如上一节中的BeanFactoryPostProcessor和BeanPostProcessor的自动识别、资源加载、容器事件和监听器、国际化支持、单例bean自动初始化等。
@@ -360,7 +360,7 @@ BeanFactory是spring的基础设施，面向spring本身；而ApplicationContext
 
 测试：见ApplicationContextTest
 
-## bean的初始化和销毁方法
+## [bean的初始化和销毁方法](#bean的初始化和销毁方法)
 > 分支：init-and-destroy-method
 
 在spring中，定义bean的初始化和销毁方法有三种方法：
@@ -444,7 +444,7 @@ public class InitAndDestoryMethodTest {
 }
 ```
 
-## Aware接口
+## [Aware接口](#Aware接口)
 > 分支：aware-interface
 
 Aware是感知、意识的意思，Aware接口是标记性接口，其实现子类能感知容器相关的对象。常用的Aware接口有BeanFactoryAware和ApplicationContextAware，分别能让其实现者感知所属的BeanFactory和ApplicationContext。
@@ -514,7 +514,7 @@ public class AwareInterfaceTest {
 }
 ```
 
-## [bean作用域，增加prototype的支持](#bean作用域)
+## [bean作用域，增加prototype的支持](#bean作用域增加prototype的支持)
 > 分支：prototype-bean
 
 每次向容器获取prototype作用域bean时，容器都会创建一个新的实例。在BeanDefinition中增加描述bean的作用域的字段scope/singleton/prototype，创建prototype作用域bean时（AbstractAutowireCapableBeanFactory#doCreateBean），不往singletonObjects中增加该bean。prototype作用域bean不执行销毁方法，查看AbstractAutowireCapableBeanFactory#registerDisposableBeanIfNecessary方法。
@@ -555,7 +555,7 @@ public class PrototypeBeanTest {
 }
 ```
 
-## FactoryBean
+## [FactoryBean](#FactoryBean)
 > 分支：factory-bean
 
 FactoryBean是一种特殊的bean，当向容器获取该bean时，容器不是返回其本身，而是返回其FactoryBean#getObject方法的返回值，可通过编码方式定义复杂的bean。
@@ -616,7 +616,7 @@ public class FactoryBeanTest {
 }
 ```
 
-## 容器事件和事件监听器
+## [容器事件和事件监听器](#容器事件和事件监听器)
 > 分支：event-and-event-listener
 
 ApplicationContext容器提供了完善的时间发布和时间监听功能。
