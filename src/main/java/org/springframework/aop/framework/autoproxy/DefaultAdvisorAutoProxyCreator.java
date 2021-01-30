@@ -13,6 +13,8 @@ import org.springframework.beans.factory.config.InstantiationAwareBeanPostProces
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author derekyi
@@ -22,8 +24,24 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
 
 	private DefaultListableBeanFactory beanFactory;
 
+	private Set<Object> earlyProxyReferences = new HashSet<>();
+
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+		if (!earlyProxyReferences.contains(beanName)) {
+			return wrapIfNecessary(bean, beanName);
+		}
+
+		return bean;
+	}
+
+	@Override
+	public Object getEarlyBeanReference(Object bean, String beanName) throws BeansException {
+		earlyProxyReferences.add(beanName);
+		return wrapIfNecessary(bean, beanName);
+	}
+
+	protected Object wrapIfNecessary(Object bean, String beanName) {
 		//避免死循环
 		if (isInfrastructureClass(bean.getClass())) {
 			return bean;
