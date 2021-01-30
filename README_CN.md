@@ -23,7 +23,7 @@
     * [资源和资源加载器](#资源和资源加载器)
     * [在xml文件中定义bean](#在xml文件中定义bean)
     * [容器扩展机制BeanFactoryPostProcess和BeanPostProcessor](#容器扩展机制BeanFactoryPostProcess和BeanPostProcessor)
-    * [应用上下文ApplicationContext](#应用上下文ApplicationContext)
+    * [应用上下文ApplicationContext](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#%E5%BA%94%E7%94%A8%E4%B8%8A%E4%B8%8B%E6%96%87ApplicationContext)
     * [bean的初始化和销毁方法](#bean的初始化和销毁方法)
     * [Aware接口](#Aware接口)
     * [bean作用域，增加prototype的支持](#bean作用域，增加prototype的支持)
