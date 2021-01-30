@@ -1462,7 +1462,7 @@ getBean()时依次检查一级缓存singletonObjects、二级缓存earlySingleto
 
 单测见CircularReferenceWithProxyBeanTest。
 
-## =======================不容易啊，完美撒花=======================
+## <p align="center">====================不容易啊，完美撒花====================</p>
 
 
 
