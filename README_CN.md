@@ -35,15 +35,15 @@
     * [基于CGLIB的动态代理](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#基于CGLIB的动态代理)
     * [AOP代理工厂ProxyFactory](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#AOP代理工厂)
     * [几种常用的Advice: BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#几种常用的AdviceBeforeAdviceAfterAdviceAfterReturningAdviceThrowsAdvice)
-    * [PointcutAdvisor：Pointcut和Advice的组合](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#PointcutAdvisorPointcut和Advice的组合)
+    * [PointcutAdvisor：Pointcut和Advice的组合](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#pointcutadvisorpointcut和advice的组合)
     * [动态代理融入bean生命周期](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#动态代理融入bean生命周期)
     
 
 #### 扩展篇
-* [PropertyPlaceholderConfigurer](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#PropertyPlaceholderConfigurer)
+* [PropertyPlaceholderConfigurer](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#propertyplaceholderconfigurer)
 * [包扫描](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#包扫描)
-* [@Value注解](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#Value注解)
-* [基于注解@Autowired的依赖注入](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#Autowired注解)
+* [@Value注解](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#value注解)
+* [基于注解@Autowired的依赖注入](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#autowired注解)
 * [类型转换（一）](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#类型转换一)
 * [类型转换（二）](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#类型转换二)
 
