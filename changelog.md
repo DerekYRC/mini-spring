@@ -933,7 +933,7 @@ public class AutoProxyTest {
 }
 ```
 
-# 扩展篇
+# [扩展篇](#扩展篇)
 
 ## [PropertyPlaceholderConfigurer](#PropertyPlaceholderConfigurer)
 > 分支：property-placeholder-configurer
@@ -1389,6 +1389,8 @@ public class TypeConversionSecondPartTest {
 	}
 }
 ```
+
+# [高级篇](#高级篇)
 
 ## [解决循环依赖问题（一）：没有代理对象](#解决循环依赖问题一没有代理对象)
 > 分支：circular-reference-without-proxy-bean
