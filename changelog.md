@@ -1393,3 +1393,107 @@ public class TypeConversionSecondPartTest {
 ## 解决循环依赖问题（一）：没有代理对象
 > 分支：circular-reference-without-proxy-bean
 
+虽然放在高级篇，其实解决循环依赖问题的方法非常简单。
+
+先理解spring中为什么会有循环依赖的问题。比如如下的代码
+
+```
+public class A {
+
+	private B b;
+
+	//getter and setter
+}
+```
+```
+public class B {
+
+	private A a;
+
+	//getter and setter
+}
+```
+```
+<beans>
+    <bean id="a" class="org.springframework.test.bean.A">
+        <property name="b" ref="b"/>
+    </bean>
+    <bean id="b" class="org.springframework.test.bean.B">
+        <property name="a" ref="a"/>
+    </bean>
+</beans>
+```
+
+A依赖B，B又依赖A，循环依赖。容器加载时会执行依赖流程：
+
+- 实例化A，发现依赖B，然后实例化B
+- 实例化B，发现依赖A，然后实例化A
+- 实例化A，发现依赖B，然后实例化B
+- ...
+
+死循环直至栈溢出。
+
+解决该问题的关键在于何时将实例化后的bean放进容器中，设置属性前还是设置属性后。现有的执行流程，bean实例化后并且设置属性后会被放进singletonObjects单例缓存中。如果我们调整一下顺序，当bean实例化后就放进singletonObjects单例缓存中，然后再设置属性，就能解决上面的循环依赖问题，执行流程变为：
+
+- 步骤一：getBean(a)，检查singletonObjects是否包含a，singletonObjects不包含a，实例化A放进singletonObjects，设置属性b，发现依赖B，尝试getBean(b)
+- 步骤二：getBean(b)，检查singletonObjects是否包含b，singletonObjects不包含a，实例化B放进singletonObjects，设置属性a，发现依赖A，尝试getBean(a)
+- 步骤三：getBean(a)，检查singletonObjects是否包含a，singletonObjects包含a，返回a
+- 步骤四：步骤二中的b拿到a，设置属性a，然后返回b
+- 步骤五：步骤一种的a拿到b，设置属性b，然后返回a
+
+可见调整bean放进singletonObjects（人称一级缓存）的时机到bean实例化后即可解决循环依赖问题。但为了和spring保持一致，我们增加一个二级缓存earlySingletonObjects，在bean实例化后将bean放进earlySingletonObjects中（见AbstractAutowireCapableBeanFactory#doCreateBean方法第6行），getBean()时检查一级缓存singletonObjects和二级缓存earlySingletonObjects中是否包含该bean，包含则直接返回（见AbstractBeanFactory#getBean第1行）。
+
+单测见CircularReferenceWithoutProxyBeanTest#testCircularReference。
+
+增加二级缓存，不能解决有代理对象时的循环依赖。原因是放进二级缓存earlySingletonObjects中的bean是实例化后的bean，而放进一级缓存singletonObjects中的bean是代理对象（代理对象在BeanPostProcessor#postProcessAfterInitialization中返回），两个缓存中的bean不一致。比如上面的例子，如果A被代理，那么B拿到的a是实例化后的A，而a是被代理后的对象，即b.getA() != a，见单测
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
