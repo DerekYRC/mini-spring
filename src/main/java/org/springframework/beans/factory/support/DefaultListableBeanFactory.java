@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 该类实现了BeanDefinitionRegistry，具有注册BeanDefinition的功能，以及获取BeanDefinition的功能
+ * 并且继承了AbstractAutowireCapableBeanFactory，具有创建bean实例的功能
+ * AbstractAutowireCapableBeanFactory 继承了 AbstractBeanFactory 所有还就有getBean(), getSingleBean等功能
+ *
  * @author derekyi
  * @date 2020/11/22
  */
