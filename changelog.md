@@ -43,11 +43,11 @@ public class SimpleBeanContainerTest {
 > 分支：bean-definition-and-bean-definition-registry
 
 主要增加如下类：
-- BeanDefinition，顾名思义，用于定义bean信息的类，包含bean的class类型、构造参数、属性值等信息，每个bean对应一个BeanDefinition的实例。简化BeanDefition仅包含bean的class类型。
-- BeanDefinitionRegistry，BeanDefinition注册表接口，定义注册BeanDefintion的方法。
+- BeanDefinition，顾名思义，用于定义bean信息的类，包含bean的class类型、构造参数、属性值等信息，每个bean对应一个BeanDefinition的实例。简化BeanDefinition仅包含bean的class类型。
+- BeanDefinitionRegistry，BeanDefinition注册表接口，定义注册BeanDefinition的方法。
 - SingletonBeanRegistry及其实现类DefaultSingletonBeanRegistry，定义添加和获取单例bean的方法。
 
-bean容器作为BeanDefinitionRegistry和SingletonBeanRegistry的实现类，具备两者的能力。向bean容器中注册BeanDefintion后，使用bean时才会实例化。
+bean容器作为BeanDefinitionRegistry和SingletonBeanRegistry的实现类，具备两者的能力。向bean容器中注册BeanDefinition后，使用bean时才会实例化。
 
 ![](./assets/bean-definition-and-bean-definition-registry.png)
 
@@ -1438,7 +1438,7 @@ A依赖B，B又依赖A，循环依赖。容器加载时会执行依赖流程：
 解决该问题的关键在于何时将实例化后的bean放进容器中，设置属性前还是设置属性后。现有的执行流程，bean实例化后并且设置属性后会被放进singletonObjects单例缓存中。如果我们调整一下顺序，当bean实例化后就放进singletonObjects单例缓存中，提前暴露引用，然后再设置属性，就能解决上面的循环依赖问题，执行流程变为：
 
 - 步骤一：getBean(a)，检查singletonObjects是否包含a，singletonObjects不包含a，实例化A放进singletonObjects，设置属性b，发现依赖B，尝试getBean(b)
-- 步骤二：getBean(b)，检查singletonObjects是否包含b，singletonObjects不包含a，实例化B放进singletonObjects，设置属性a，发现依赖A，尝试getBean(a)
+- 步骤二：getBean(b)，检查singletonObjects是否包含b，singletonObjects不包含b，实例化B放进singletonObjects，设置属性a，发现依赖A，尝试getBean(a)
 - 步骤三：getBean(a)，检查singletonObjects是否包含a，singletonObjects包含a，返回a
 - 步骤四：步骤二中的b拿到a，设置属性a，然后返回b
 - 步骤五：步骤一种的a拿到b，设置属性b，然后返回a
