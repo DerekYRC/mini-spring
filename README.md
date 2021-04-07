@@ -51,7 +51,7 @@ If this project can help you, please **STAR the project, thank you!!!**
 * [Solve the problem of circular dependencies(first part): without proxy bean](#解决循环依赖问题一)
 * [Solve the problem of circular dependencies(second part): with proxy bean](#解决循环依赖问题二)
 
-#### bug fix
+#### Bug fix
 * [populate proxy bean with property values(discovered and fixed by kerwin89)](#没有为代理bean设置属性)
 
 ## Usage
