@@ -61,7 +61,7 @@
 欢迎Pull Request。
 
 ## 联系我
-欢迎探讨跟mini-spring和其他技术相关的问题，个人邮箱：**15521077528@163.com**。
+邮箱：**15521077528@163.com**
 
 ## 参考
 - [《Spring源码深度解析》](https://book.douban.com/subject/25866350/)
