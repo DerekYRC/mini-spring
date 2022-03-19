@@ -4,9 +4,9 @@
 [![Stars](https://img.shields.io/github/stars/DerekYRC/mini-spring)](https://img.shields.io/github/stars/DerekYRC/mini-spring)
 [![Forks](https://img.shields.io/github/forks/DerekYRC/mini-spring)](https://img.shields.io/github/forks/DerekYRC/mini-spring)
 
-姊妹版：[mini-spring-cloud(简化版的spring cloud框架)](https://github.com/DerekYRC/mini-spring-cloud)
-
 * [English version](./README.md)
+
+**姊妹版：**[**mini-spring-cloud** (简化版的spring cloud框架)](https://github.com/DerekYRC/mini-spring-cloud)
 
 ## 关于
 
