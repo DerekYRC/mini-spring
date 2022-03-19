@@ -6,7 +6,7 @@
 
 * [English version](./README.md)
 
-**姊妹版：**[**mini-spring-cloud** (简化版的spring cloud框架)](https://github.com/DerekYRC/mini-spring-cloud)
+**姊妹版：**[**mini-spring-cloud (简化版的spring cloud框架)**](https://github.com/DerekYRC/mini-spring-cloud)
 
 ## 关于
 
