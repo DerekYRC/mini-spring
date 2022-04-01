@@ -74,3 +74,7 @@
 - [《Spring源码深度解析》](https://book.douban.com/subject/25866350/)
 - [《精通Spring 4.x》](https://book.douban.com/subject/26952826/)
 - [tiny-spring](https://github.com/code4craft/tiny-spring)
+
+## 版权说明
+
+本项目可用于个人学习、非商业性或非盈利性用途。将本项目用于其他用途时，须征得本人的书面许可。
