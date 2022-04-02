@@ -72,5 +72,6 @@
 
 ## 参考
 - [《Spring源码深度解析》](https://book.douban.com/subject/25866350/)
+- [《Spring 源码解析》](http://svip.iocoder.cn/categories/Spring)
 - [《精通Spring 4.x》](https://book.douban.com/subject/26952826/)
 - [tiny-spring](https://github.com/code4craft/tiny-spring)
