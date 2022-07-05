@@ -382,7 +382,7 @@ BeanFactory是spring的基础设施，面向spring本身；而ApplicationContext
 
 测试：
 init-and-destroy-method.xml
-```java
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -959,7 +959,7 @@ car.properties
 brand=lamborghini
 ```
 
-```java
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
