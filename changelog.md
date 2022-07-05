@@ -3,7 +3,7 @@
  > 代码分支：simple-bean-container
 
 定义一个简单的bean容器BeanFactory，内部包含一个map用以保存bean，只有注册bean和获取bean两个方法
-```
+```java
 public class BeanFactory {
 	private Map<String, Object> beanMap = new HashMap<>();
 
@@ -18,7 +18,7 @@ public class BeanFactory {
 ```
 
 测试：
-```
+```java
 public class SimpleBeanContainerTest {
 
 	@Test
@@ -52,7 +52,7 @@ bean容器作为BeanDefinitionRegistry和SingletonBeanRegistry的实现类，具
 ![](./assets/bean-definition-and-bean-definition-registry.png)
 
 测试：
-```
+```java
 public class BeanDefinitionAndBeanDefinitionRegistryTest {
 
 	@Test
@@ -91,7 +91,7 @@ class HelloService {
 在BeanDefinition中增加和bean属性对应的PropertyValues，实例化bean之后，为bean填充属性(AbstractAutowireCapableBeanFactory#applyPropertyValues)。
 
 测试：
-```
+```java
 public class PopulateBeanWithPropertyValuesTest {
 
 	@Test
@@ -116,7 +116,7 @@ public class PopulateBeanWithPropertyValuesTest {
 
 增加BeanReference类，包装一个bean对另一个bean的引用。实例化beanA后填充属性时，若PropertyValue#value为BeanReference，引用beanB，则先去实例化beanB。
 由于不想增加代码的复杂度提高理解难度，暂时不支持循环依赖，后面会在高级篇中解决该问题。
-```
+```java
 protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
     try {
         for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()) {
@@ -138,7 +138,7 @@ protected void applyPropertyValues(String beanName, Object bean, BeanDefinition 
 ```
 
 测试：
-```
+```java
 public class PopulateBeanWithPropertyValuesTest {
 
 	/**
@@ -190,7 +190,7 @@ Resource是资源的抽象和访问接口，简单写了三个实现类
 ResourceLoader接口则是资源查找定位策略的抽象，DefaultResourceLoader是其默认实现类
 
 测试：
-```
+```java
 public class ResourceAndResourceLoaderTest {
 
 	@Test
@@ -237,7 +237,7 @@ BeanDefinitionReader是读取bean定义信息的抽象接口，XmlBeanDefinition
 
 测试：
 bean定义文件spring.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -259,7 +259,7 @@ bean定义文件spring.xml
 </beans>
 ```
 
-```
+```java
 public class XmlFileDefineBeanTest {
 
 	@Test
@@ -291,7 +291,7 @@ BeanPostProcessor也是spring提供的容器扩展机制，不同于BeanFactoryP
 
 BeanPostProcessor的两个方法分别在bean执行初始化方法（后面实现）之前和之后执行，理解其实现重点看单元测试BeanFactoryPostProcessorAndBeanPostProcessorTest#testBeanPostProcessor和AbstractAutowireCapableBeanFactory#initializeBean方法，有些地方做了微调，可不必关注。
 
-```
+```java
 public interface BeanPostProcessor {
 	/**
 	 * 在bean执行初始化方法之前执行此方法
@@ -308,7 +308,7 @@ public interface BeanPostProcessor {
 下一节将引入ApplicationContext，能自动识别BeanFactoryPostProcessor和BeanPostProcessor，就可以在xml文件中配置而不需要手动添加到BeanFactory了。
 
 测试：
-```
+```java
 public class BeanFactoryProcessorAndBeanPostProcessorTest {
 
 	@Test
@@ -382,7 +382,7 @@ BeanFactory是spring的基础设施，面向spring本身；而ApplicationContext
 
 测试：
 init-and-destroy-method.xml
-```
+```java
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -403,7 +403,8 @@ init-and-destroy-method.xml
 
 </beans>
 ```
-```
+
+```java
 public class Person implements InitializingBean, DisposableBean {
 
 	private String name;
@@ -433,7 +434,8 @@ public class Person implements InitializingBean, DisposableBean {
     //setter and getter
 }
 ```
-```
+
+```java
 public class InitAndDestoryMethodTest {
 
 	@Test
@@ -461,7 +463,7 @@ Aware是感知、意识的意思，Aware接口是标记性接口，其实现子�
 
 测试：
 spring.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -475,7 +477,8 @@ spring.xml
 
 </beans>
 ```
-```
+
+```java
 public class HelloService implements ApplicationContextAware, BeanFactoryAware {
 
 	private ApplicationContext applicationContext;
@@ -501,7 +504,8 @@ public class HelloService implements ApplicationContextAware, BeanFactoryAware {
 	}
 }
 ```
-```
+
+```java
 public class AwareInterfaceTest {
 
 	@Test
@@ -525,7 +529,7 @@ public class AwareInterfaceTest {
 
 测试：
 prototype-bean.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -541,7 +545,8 @@ prototype-bean.xml
 
 </beans>
 ```
-```
+
+```java
 public class PrototypeBeanTest {
 
 	@Test
@@ -564,7 +569,7 @@ FactoryBean是一种特殊的bean，当向容器获取该bean时，容器不是�
 
 测试：
 factory-bean.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -580,7 +585,8 @@ factory-bean.xml
 
 </beans>
 ```
-```
+
+```java
 public class CarFactoryBean implements FactoryBean<Car> {
 
 	private String brand;
@@ -602,7 +608,8 @@ public class CarFactoryBean implements FactoryBean<Car> {
 	}
 }
 ```
-```
+
+```java
 public class FactoryBeanTest {
 
 	@Test
@@ -625,7 +632,7 @@ ApplicationEventMulticaster接口是注册监听器和发布事件的抽象接�
 
 测试：
 event-and-event-listener.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -642,7 +649,8 @@ event-and-event-listener.xml
     <bean class="org.springframework.test.common.event.ContextClosedEventListener"/>
 </beans>
 ```
-```
+
+```java
 public class EventAndEventListenerTest {
 
 	@Test
@@ -654,6 +662,7 @@ public class EventAndEventListenerTest {
 	}
 }
 ```
+
 观察输出：
 ```
 org.springframework.test.common.event.ContextRefreshedEventListener
@@ -671,7 +680,7 @@ Joinpoint，织入点，指需要执行代理操作的某个类的某个方法(�
 最常用的切点表达式是AspectJ的切点表达式。需要匹配类，定义ClassFilter接口；匹配方法，定义MethodMatcher接口。PointCut需要同时匹配类和方法，包含ClassFilter和MethodMatcher，AspectJExpressionPointcut是支持AspectJ切点表达式的PointCut实现，简单实现仅支持execution函数。
 
 测试：
-```
+```java
 public class HelloService {
 	public String sayHello() {
 		System.out.println("hello");
@@ -679,7 +688,8 @@ public class HelloService {
 	}
 }
 ```
-```
+
+```java
 public class PointcutExpressionTest {
 
 	@Test
@@ -700,7 +710,7 @@ public class PointcutExpressionTest {
 AopProxy是获取代理对象的抽象接口，JdkDynamicAopProxy的基于JDK动态代理的具体实现。TargetSource，被代理对象的封装。MethodInterceptor，方法拦截器，是AOP Alliance的"公民"，顾名思义，可以拦截方法，可在被代理执行的方法前后增加代理行为。
 
 测试;
-```
+```java
 public class DynamicProxyTest {
 
 	@Test
@@ -727,7 +737,7 @@ public class DynamicProxyTest {
 基于CGLIB的动态代理实现逻辑也比较简单，查看CglibAopProxy。与基于JDK的动态代理在运行期间为接口生成对象的代理对象不同，基于CGLIB的动态代理能在运行期间动态构建字节码的class文件，为类生成子类，因此被代理类不需要继承自任何接口。
 
 测试：
-```
+```java
 public class DynamicProxyTest {
 
 	private AdvisedSupport advisedSupport;
@@ -759,7 +769,7 @@ public class DynamicProxyTest {
 增加AOP代理工厂ProxyFactory，由AdvisedSupport#proxyTargetClass属性决定使用JDK动态代理还是CGLIB动态代理。
 
 测试：
-```
+```java
 public class DynamicProxyTest {
 
 	private AdvisedSupport advisedSupport;
@@ -804,7 +814,7 @@ Spring将AOP联盟中的Advice细化出各种类型的Advice，常用的有Befor
 - [ ] ThrowsAdvice   
 
 测试：
-```
+```java
 public class WorldServiceBeforeAdvice implements MethodBeforeAdvice {
 
 	@Override
@@ -813,7 +823,8 @@ public class WorldServiceBeforeAdvice implements MethodBeforeAdvice {
 	}
 }
 ```
-```
+
+```java
 public class DynamicProxyTest {
 
 	private AdvisedSupport advisedSupport;
@@ -848,7 +859,7 @@ public class DynamicProxyTest {
 Advisor是包含一个Pointcut和一个Advice的组合，Pointcut用于捕获JoinPoint，Advice决定在JoinPoint执行某种操作。实现了一个支持aspectj表达式的AspectJExpressionPointcutAdvisor。
 
 测试：
-```
+```java
 public class DynamicProxyTest {
 
 	@Test
@@ -891,7 +902,7 @@ DefaultAdvisorAutoProxyCreator是处理横切逻辑的织入返回代理对象�
 
 测试：
 auto-proxy.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -919,7 +930,7 @@ auto-proxy.xml
 
 </beans>
 ```
-```
+```java
 public class AutoProxyTest {
 
 	@Test
@@ -944,10 +955,11 @@ public class AutoProxyTest {
 
 测试：
 car.properties
-```
+```properties
 brand=lamborghini
 ```
-```
+
+```java
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -967,7 +979,8 @@ brand=lamborghini
 
 </beans>
 ```
-```
+
+```java
 public class PropertyPlaceholderConfigurerTest {
 
 	@Test
@@ -988,14 +1001,15 @@ public class PropertyPlaceholderConfigurerTest {
 在XmlBeanDefinitionReader中解析```<context:component-scan />```标签，扫描类组装BeanDefinition然后注册到容器中的操作在ClassPathBeanDefinitionScanner#doScan中实现。
 
 测试：
-```
+```java
 @Component
 public class Car {
 
 }
 ```
+
 package-scan.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1009,7 +1023,8 @@ package-scan.xml
 
 </beans>
 ```
-```
+
+```java
 public class PackageScanTest {
 
 	@Test
@@ -1030,7 +1045,7 @@ public class PackageScanTest {
 增加AutowiredAnnotationBeanPostProcessor用于处理注解@Value，@Autowired的处理在下一节实现，在ClassPathBeanDefinitionScanner#doScan将其添加到容器中。查看AutowiredAnnotationBeanPostProcessor#postProcessPropertyValues，其中字符解析器StringValueResolver在PropertyPlaceholderConfigurer中添加到BeanFactory中。
 
 测试：
-```
+```java
 @Component
 public class Car {
 
@@ -1038,8 +1053,9 @@ public class Car {
 	private String brand;
 }
 ```
+
 value-annotation.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1057,11 +1073,13 @@ value-annotation.xml
 
 </beans>
 ```
+
 car.properties
-```
+```properties
 brand=lamborghini
 ```
-```
+
+```java
 public class ValueAnnotationTest {
 
 	@Test
@@ -1072,7 +1090,6 @@ public class ValueAnnotationTest {
 		assertThat(car.getBrand()).isEqualTo("lamborghini");
 	}
 }
-
 ```
 
 ## [@Autowired注解](#Autowired注解)
@@ -1081,7 +1098,7 @@ public class ValueAnnotationTest {
 @Autowired注解的处理见AutowiredAnnotationBeanPostProcessor#postProcessPropertyValues
 
 测试：
-```
+```java
 @Component
 public class Car {
 
@@ -1095,7 +1112,7 @@ public class Person implements InitializingBean, DisposableBean {
 }
 ```
 autowired-annotation.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1109,7 +1126,8 @@ autowired-annotation.xml
 
 </beans>
 ```
-```
+
+```java
 public class AutowiredAnnotationTest {
 
 	@Test
@@ -1138,7 +1156,7 @@ public class AutowiredAnnotationTest {
 
 测试：
 populate-proxy-bean-with-property-values.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1168,7 +1186,8 @@ populate-proxy-bean-with-property-values.xml
 
 </beans>
 ```
-```
+
+```java
 public class WorldServiceImpl implements WorldService {
 
 	private String name;
@@ -1181,7 +1200,8 @@ public class WorldServiceImpl implements WorldService {
 	//setter and getter
 }
 ```
-```
+
+```java
 public class AutoProxyTest {
 
 	@Test
@@ -1202,7 +1222,7 @@ public class AutoProxyTest {
 spring在org.springframework.core.convert.converter包中定义了三种类型转换器接口：Converter、ConverterFactory、GenericConverter。
 
 ### 一、Converter
-```
+```java
 public interface Converter<S, T> {
 
 	/**
@@ -1212,7 +1232,7 @@ public interface Converter<S, T> {
 }
 ```
 Converter能将S类型的对象转换为T类型的对象，比如将String类型的对象转换为Integer类型的对象的实现类：
-```
+```java
 public class StringToIntegerConverter implements Converter<String, Integer> {
 	@Override
 	public Integer convert(String source) {
@@ -1221,12 +1241,12 @@ public class StringToIntegerConverter implements Converter<String, Integer> {
 }
 ```
 使用：
-```
+```java
 Integer num = new StringToIntegerConverter().convert("8888");
 ```
 
 ### 二、ConverterFactory
-```
+```java
 public interface ConverterFactory<S, R> {
 
 	<T extends R> Converter<S, T> getConverter(Class<T> targetType);
@@ -1235,7 +1255,7 @@ public interface ConverterFactory<S, R> {
 Converter<S,T>接口适合一对一的类型转换，如果要将String类型转换为Ineger/Long/Float/Double/Decimal等类型，就要实现一系列的StringToInteger/StringToLongConverter/StringToFloatConverter转换器，非常不优雅。
 
 ConverterFactory接口则适合一对多的类型转换，可以将一种类型转换为另一种类型及其子类。比如将String类型转换为Ineger/Long/Float/Double/Decimal等Number类型时，只需定义一个ConverterFactory转换器：
-```
+```java
 public class StringToNumberConverterFactory implements ConverterFactory<String, Number> {
 
 	@Override
@@ -1274,14 +1294,14 @@ public class StringToNumberConverterFactory implements ConverterFactory<String, 
 }
 ```
 使用：
-```
+```java
 StringToNumberConverterFactory converterFactory = new StringToNumberConverterFactory();
 Converter<String, Integer> stringToIntegerConverter = converterFactory.getConverter(Integer.class);
 Integer num = stringToIntegerConverter.convert("8888");
 ```
 
 ### 三、GenericConverter
-```
+```java
 public interface GenericConverter {
 
 	Set<ConvertiblePair> getConvertibleTypes();
@@ -1290,7 +1310,7 @@ public interface GenericConverter {
 }
 ```
 String类型转换为Boolean类型的实现类：
-```
+```java
 public class StringToBooleanConverter implements GenericConverter {
 	@Override
 	public Set<ConvertiblePair> getConvertibleTypes() {
@@ -1304,7 +1324,7 @@ public class StringToBooleanConverter implements GenericConverter {
 }
 ```
 使用:
-```
+```java
 Boolean flag = new StringToBooleanConverter().convert("true", String.class, Boolean.class);
 ```
 
@@ -1329,7 +1349,7 @@ ConversionService是类型转换体系的核心接口，将以上三种类型转
 你可能会有疑问，如果没有定义ConversionService，是怎么进行基本类型的转换的？其实spring为了向下兼容保留了一套比较旧的类型转换机制，没有定义ConversionService时会使用其进行基本类型的转换工作，不必关注旧的类型转换机制。
 
 测试：
-```
+```java
 public class Car {
 
 	private int price;
@@ -1337,7 +1357,8 @@ public class Car {
 	private LocalDate produceDate;
 }
 ```
-```
+
+```java
 public class StringToLocalDateConverter implements Converter<String, LocalDate> {
 
 	private final DateTimeFormatter DATE_TIME_FORMATTER;
@@ -1352,8 +1373,9 @@ public class StringToLocalDateConverter implements Converter<String, LocalDate> 
 	}
 }
 ```
+
 type-conversion-second-part.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1376,7 +1398,8 @@ type-conversion-second-part.xml
 
 </beans>
 ```
-```
+
+```java
 public class TypeConversionSecondPartTest {
 
 	@Test
@@ -1399,7 +1422,7 @@ public class TypeConversionSecondPartTest {
 
 先理解spring中为什么会有循环依赖的问题。比如如下的代码
 
-```
+```java
 public class A {
 
 	private B b;
@@ -1407,7 +1430,8 @@ public class A {
 	//getter and setter
 }
 ```
-```
+
+```java
 public class B {
 
 	private A a;
@@ -1415,7 +1439,8 @@ public class B {
 	//getter and setter
 }
 ```
-```
+
+```xml
 <beans>
     <bean id="a" class="org.springframework.test.bean.A">
         <property name="b" ref="b"/>
