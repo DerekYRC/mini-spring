@@ -4,6 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 	}
 
 	public void destroySingletons() {
-		Set<String> beanNames = disposableBeans.keySet();
+		ArrayList<String> beanNames = new ArrayList<>(disposableBeans.keySet());
 		for (String beanName : beanNames) {
 			DisposableBean disposableBean = disposableBeans.remove(beanName);
 			try {
