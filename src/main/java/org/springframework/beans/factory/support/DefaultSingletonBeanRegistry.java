@@ -1,13 +1,13 @@
 package org.springframework.beans.factory.support;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author derekyi
@@ -60,7 +60,7 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 	}
 
 	public void destroySingletons() {
-		Set<String> beanNames = disposableBeans.keySet();
+		ArrayList<String> beanNames = new ArrayList<>(disposableBeans.keySet());
 		for (String beanName : beanNames) {
 			DisposableBean disposableBean = disposableBeans.remove(beanName);
 			try {
