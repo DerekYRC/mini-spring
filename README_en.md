@@ -4,7 +4,7 @@
 [![Stars](https://img.shields.io/github/stars/DerekYRC/mini-spring)](https://img.shields.io/github/stars/DerekYRC/mini-spring)
 [![Forks](https://img.shields.io/github/forks/DerekYRC/mini-spring)](https://img.shields.io/github/forks/DerekYRC/mini-spring)
 
-English | [简体中文](./README.md)
+**English | [简体中文](./README.md)**
 
 ## About
 
