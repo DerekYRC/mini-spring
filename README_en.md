@@ -6,6 +6,8 @@
 
 **English | [简体中文](./README.md)**
 
+[**mini-spring-cloud**](https://github.com/DerekYRC/mini-spring-cloud) **(simplified version of the Spring Cloud framework)**
+
 ## About
 
 The **mini-spring** is a simplified version of the Spring framework that will help you quickly get familiar with the Spring source code and grasp the core principles of Spring. The core logic of Spring is extracted, the code is extremely simplified, and the core functions of Spring, such as IoC and AOP, resource loaders, event listeners, type conversion, container extension points, bean life cycle and scope, and application context, are retained.
