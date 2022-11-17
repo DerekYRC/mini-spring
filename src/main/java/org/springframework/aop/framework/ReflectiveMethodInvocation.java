@@ -19,9 +19,9 @@ public class ReflectiveMethodInvocation implements MethodInvocation {
 
 	protected final Object[] arguments;
 
-	private List<MethodInterceptor> methodInterceptorList;
+	protected List<MethodInterceptor> methodInterceptorList;
 	// 调用次数
-	private int count = 1;
+	protected int count = 1;
 
 	public ReflectiveMethodInvocation(Object target, Method method, Object[] arguments) {
 		this.target = target;

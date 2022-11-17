@@ -43,13 +43,14 @@ public class CglibAopProxy implements AopProxy {
 		}
 
 		@Override
-		public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-			CglibMethodInvocation methodInvocation = new CglibMethodInvocation(advised.getTargetSource().getTarget(), method, objects, methodProxy);
+		public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+			CglibMethodInvocation methodInvocation = new CglibMethodInvocation(advised.getTargetSource().getTarget(), method, args, methodProxy);
+			methodInvocation.setMethodInterceptorList(advised.getMethodInterceptorList());
 			if (advised.getMethodMatcher().matches(method, advised.getTargetSource().getTarget().getClass())) {
 				//代理方法
-				return advised.getMethodInterceptor().invoke(methodInvocation);
+				return methodInvocation.proceed();
 			}
-			return methodInvocation.proceed();
+			return method.invoke(advised.getTargetSource().getTarget(), args);
 		}
 	}
 
@@ -64,7 +65,13 @@ public class CglibAopProxy implements AopProxy {
 
 		@Override
 		public Object proceed() throws Throwable {
-			return this.methodProxy.invoke(this.target, this.arguments);
+			if (count > methodInterceptorList.size()) {
+				// 调用目标， 返回并结束递归
+				return this.methodProxy.invoke(this.target, this.arguments);
+			}
+			// 逐一调用通知, count + 1
+			org.aopalliance.intercept.MethodInterceptor methodInterceptor = methodInterceptorList.get(count++ - 1);
+			return methodInterceptor.invoke(this);
 		}
 	}
 }
