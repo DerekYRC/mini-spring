@@ -70,6 +70,9 @@
 
 邮箱：**15521077528@163.com**
 
+## 版权说明
+未取得本人书面许可，不得将该项目用于商业用途
+
 ## 参考
 - [《Spring源码深度解析》](https://book.douban.com/subject/25866350/)
 - [《Spring 源码解析》](http://svip.iocoder.cn/categories/Spring)
