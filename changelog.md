@@ -521,7 +521,7 @@ public class AwareInterfaceTest {
 ## [bean作用域，增加prototype的支持](#bean作用域增加prototype的支持)
 > 代码分支：prototype-bean
 
-每次向容器获取prototype作用域bean时，容器都会创建一个新的实例。在BeanDefinition中增加描述bean的作用域的字段scope/singleton/prototype，创建prototype作用域bean时（AbstractAutowireCapableBeanFactory#doCreateBean），不往singletonObjects中增加该bean。prototype作用域bean不执行销毁方法，查看AbstractAutowireCapableBeanFactory#registerDisposableBeanIfNecessary方法。
+每次向容器获取prototype作用域bean时，容器都会创建一个新的实例。在BeanDefinition中增加描述bean的作用域的字段scope，创建prototype作用域bean时（AbstractAutowireCapableBeanFactory#doCreateBean），不往singletonObjects中增加该bean。prototype作用域bean不执行销毁方法，查看AbstractAutowireCapableBeanFactory#registerDisposableBeanIfNecessary方法。
 
 至止，bean的生命周期如下：
 
@@ -626,7 +626,7 @@ public class FactoryBeanTest {
 ## [容器事件和事件监听器](#容器事件和事件监听器)
 > 代码分支：event-and-event-listener
 
-ApplicationContext容器提供了完善的时间发布和时间监听功能。
+ApplicationContext容器提供了完善的事件发布和事件监听功能。
 
 ApplicationEventMulticaster接口是注册监听器和发布事件的抽象接口，AbstractApplicationContext包含其实现类实例作为其属性，使得ApplicationContext容器具有注册监听器和发布事件的能力。在AbstractApplicationContext#refresh方法中，会实例化ApplicationEventMulticaster、注册监听器并发布容器刷新事件ContextRefreshedEvent；在AbstractApplicationContext#doClose方法中，发布容器关闭事件ContextClosedEvent。
 
