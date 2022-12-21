@@ -3,15 +3,13 @@ package org.springframework.aop.framework;
 import org.springframework.aop.AdvisedSupport;
 
 /**
- * @author derekyi
- * @date 2020/12/6
+ * @author zqc
+ * @date 2022/12/16
  */
-public class ProxyFactory {
+public class ProxyFactory extends AdvisedSupport{
 
-	private AdvisedSupport advisedSupport;
 
-	public ProxyFactory(AdvisedSupport advisedSupport) {
-		this.advisedSupport = advisedSupport;
+	public ProxyFactory() {
 	}
 
 	public Object getProxy() {
@@ -19,10 +17,9 @@ public class ProxyFactory {
 	}
 
 	private AopProxy createAopProxy() {
-		if (advisedSupport.isProxyTargetClass()) {
-			return new CglibAopProxy(advisedSupport);
+		if (this.isProxyTargetClass()||this.getTargetSource().getTargetClass().length==0) {
+			return new CglibAopProxy(this);
 		}
-
-		return new JdkDynamicAopProxy(advisedSupport);
+		return new JdkDynamicAopProxy(this);
 	}
 }

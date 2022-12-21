@@ -30,6 +30,8 @@ public class BeanDefinition {
 
 	private boolean prototype = false;
 
+	private boolean lazyInit=false;
+
 	public BeanDefinition(Class beanClass) {
 		this(beanClass, null);
 	}
@@ -96,5 +98,13 @@ public class BeanDefinition {
 	@Override
 	public int hashCode() {
 		return Objects.hash(beanClass);
+	}
+
+	public void setLazyInit(boolean b){
+		lazyInit=b;
+	}
+
+	public boolean isLazyInit(){
+		return lazyInit;
 	}
 }

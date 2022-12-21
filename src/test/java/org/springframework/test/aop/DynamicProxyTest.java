@@ -55,12 +55,12 @@ public class DynamicProxyTest {
 	public void testProxyFactory() throws Exception {
 		// 使用JDK动态代理
 		advisedSupport.setProxyTargetClass(false);
-		WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+		WorldService proxy = (WorldService) new ProxyFactory().getProxy();
 		proxy.explode();
 
 		// 使用CGLIB动态代理
 		advisedSupport.setProxyTargetClass(true);
-		proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+		proxy = (WorldService) new ProxyFactory().getProxy();
 		proxy.explode();
 	}
 
@@ -71,7 +71,7 @@ public class DynamicProxyTest {
 		MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(beforeAdvice);
 		advisedSupport.setMethodInterceptor(methodInterceptor);
 
-		WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+		WorldService proxy = (WorldService) new ProxyFactory().getProxy();
 		proxy.explode();
 	}
 
@@ -96,7 +96,7 @@ public class DynamicProxyTest {
 			advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
 //			advisedSupport.setProxyTargetClass(true);   //JDK or CGLIB
 
-			WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+			WorldService proxy = (WorldService) new ProxyFactory().getProxy();
 			proxy.explode();
 		}
 	}
