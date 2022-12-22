@@ -71,6 +71,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	@Override
+	//只有当bean是单例且不为懒加载才会被创建
 	public void preInstantiateSingletons() throws BeansException {
 		beanDefinitionMap.forEach((beanName, beanDefinition) -> {
 			if(beanDefinition.isSingleton()&&!beanDefinition.isLazyInit()){
