@@ -53,8 +53,9 @@
 * [解决循环依赖问题（一）：没有代理对象](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#解决循环依赖问题一没有代理对象)
 * [解决循环依赖问题（二）：有代理对象](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#解决循环依赖问题二有代理对象)
 
-#### Bug fix
+#### 其他
 * [没有为代理bean设置属性(discovered and fixed by kerwin89)](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#bug-fix没有为代理bean设置属性discovered-and-fixed-by-kerwin89)
+* [支持懒加载和多个增强(by zqczgl)](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#支持懒加载和多个增强(By zqczgl))
 
 ## 使用方法
 阅读[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
