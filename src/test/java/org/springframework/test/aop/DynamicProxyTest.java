@@ -3,16 +3,15 @@ package org.springframework.test.aop;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.aop.AdvisedSupport;
-import org.springframework.aop.ClassFilter;
-import org.springframework.aop.MethodMatcher;
-import org.springframework.aop.TargetSource;
+import org.springframework.aop.*;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.aop.framework.CglibAopProxy;
 import org.springframework.aop.framework.JdkDynamicAopProxy;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor;
 import org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor;
+import org.springframework.test.common.WorldServiceAfterReturnAdvice;
 import org.springframework.test.common.WorldServiceBeforeAdvice;
 import org.springframework.test.common.WorldServiceInterceptor;
 import org.springframework.test.service.WorldService;
@@ -29,14 +28,16 @@ public class DynamicProxyTest {
 	@Before
 	public void setup() {
 		WorldService worldService = new WorldServiceImpl();
-
-		advisedSupport = new AdvisedSupport();
+		advisedSupport=new ProxyFactory();
+		//Advisor是Pointcut和Advice的组合
+		String expression = "execution(* org.springframework.test.service.WorldService.explode(..))";
+		AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
+		advisor.setExpression(expression);
+		AfterReturningAdviceInterceptor methodInterceptor = new AfterReturningAdviceInterceptor(new WorldServiceAfterReturnAdvice());
+		advisor.setAdvice(methodInterceptor);
 		TargetSource targetSource = new TargetSource(worldService);
-		WorldServiceInterceptor methodInterceptor = new WorldServiceInterceptor();
-		MethodMatcher methodMatcher = new AspectJExpressionPointcut("execution(* org.springframework.test.service.WorldService.explode(..))").getMethodMatcher();
 		advisedSupport.setTargetSource(targetSource);
-		advisedSupport.setMethodInterceptor(methodInterceptor);
-		advisedSupport.setMethodMatcher(methodMatcher);
+		advisedSupport.addAdvisor(advisor);
 	}
 
 	@Test
@@ -54,24 +55,28 @@ public class DynamicProxyTest {
 	@Test
 	public void testProxyFactory() throws Exception {
 		// 使用JDK动态代理
-		advisedSupport.setProxyTargetClass(false);
-		WorldService proxy = (WorldService) new ProxyFactory().getProxy();
+		ProxyFactory factory=(ProxyFactory) advisedSupport;
+		factory.setProxyTargetClass(false);
+		WorldService proxy = (WorldService) factory.getProxy();
 		proxy.explode();
 
 		// 使用CGLIB动态代理
-		advisedSupport.setProxyTargetClass(true);
-		proxy = (WorldService) new ProxyFactory().getProxy();
+		factory.setProxyTargetClass(true);
+		proxy = (WorldService) factory.getProxy();
 		proxy.explode();
 	}
 
 	@Test
 	public void testBeforeAdvice() throws Exception {
 		//设置BeforeAdvice
-		WorldServiceBeforeAdvice beforeAdvice = new WorldServiceBeforeAdvice();
-		MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(beforeAdvice);
-		advisedSupport.setMethodInterceptor(methodInterceptor);
-
-		WorldService proxy = (WorldService) new ProxyFactory().getProxy();
+		String expression = "execution(* org.springframework.test.service.WorldService.explode(..))";
+		AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
+		advisor.setExpression(expression);
+		MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(new WorldServiceBeforeAdvice());
+		advisor.setAdvice(methodInterceptor);
+		advisedSupport.addAdvisor(advisor);
+		ProxyFactory factory=(ProxyFactory) advisedSupport;
+		WorldService proxy = (WorldService) factory.getProxy();
 		proxy.explode();
 	}
 
@@ -88,15 +93,15 @@ public class DynamicProxyTest {
 
 		ClassFilter classFilter = advisor.getPointcut().getClassFilter();
 		if (classFilter.matches(worldService.getClass())) {
-			AdvisedSupport advisedSupport = new AdvisedSupport();
+			ProxyFactory proxyFactory = new ProxyFactory();
 
 			TargetSource targetSource = new TargetSource(worldService);
-			advisedSupport.setTargetSource(targetSource);
-			advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
-			advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
+			proxyFactory.setTargetSource(targetSource);
+			proxyFactory.addAdvisor(advisor);
+			//proxyFactory.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
 //			advisedSupport.setProxyTargetClass(true);   //JDK or CGLIB
 
-			WorldService proxy = (WorldService) new ProxyFactory().getProxy();
+			WorldService proxy = (WorldService) proxyFactory.getProxy();
 			proxy.explode();
 		}
 	}
