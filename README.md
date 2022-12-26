@@ -55,7 +55,7 @@
 
 #### 其他
 * [没有为代理bean设置属性(discovered and fixed by kerwin89)](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#bug-fix没有为代理bean设置属性discovered-and-fixed-by-kerwin89)
-* [支持懒加载和多切面增强(by zqczgl)](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#支持懒加载和多切面增强-by-zqczgl)
+* [支持懒加载和多切面增强(by zqczgl)](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#支持懒加载和多切面增强by-zqczgl)
 
 ## 使用方法
 阅读[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)

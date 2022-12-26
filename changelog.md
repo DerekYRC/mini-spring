@@ -1491,7 +1491,10 @@ getBean()时依次检查一级缓存singletonObjects、二级缓存earlySingleto
 
 单测见CircularReferenceWithProxyBeanTest。
 
-## [支持懒加载和多切面增强(By zqczgl)](#支持懒加载和多切面增强-by-zqczgl)
+## [bug fix：没有为代理bean设置属性（discovered and fixed by @kerwin89）](#bug-fix没有为代理bean设置属性discovered-and-fixed-by-kerwin89)
+
+
+## [支持懒加载和多切面增强(By @zqczgl)](#支持懒加载和多切面增强by-zqczgl)
 
 ### [懒加载](#懒加载)
 
