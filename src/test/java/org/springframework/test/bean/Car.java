@@ -45,13 +45,16 @@ public class Car {
 	public void setProduceDate(LocalDate produceDate) {
 		this.produceDate = produceDate;
 	}
-	public void init(){
-		date=System.currentTimeMillis();
+
+	public void init() {
+		date = System.currentTimeMillis();
 	}
-	public void showTime(){
-		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");
-		System.out.println(date+":bean create");
+
+	public void showTime() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");
+		System.out.println(date + ":bean create");
 	}
+
 	@Override
 	public String toString() {
 		return "Car{" +

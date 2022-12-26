@@ -23,10 +23,13 @@
     <bean id="methodInterceptor" class="org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
         <property name="advice" ref="beforeAdvice"/>
     </bean>
+
     <bean id="methodInterceptor2" class="org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor">
         <property name="advice" ref="afterAdvice"/>
     </bean>
+
     <bean id="afterAdvice" class="org.springframework.test.common.WorldServiceAfterReturnAdvice"/>
+
     <bean id="beforeAdvice" class="org.springframework.test.common.WorldServiceBeforeAdvice"/>
 
 </beans>

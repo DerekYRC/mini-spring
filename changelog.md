@@ -1926,5 +1926,3 @@ AfterAdvice: do something after the earth explodes
 ```
 
 至此，我们已经解决多切面匹配同一方法的问题。
-
-## <p align="center">====================不容易啊，完美撒花====================</p>
