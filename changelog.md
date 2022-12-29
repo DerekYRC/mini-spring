@@ -1623,7 +1623,7 @@ ProxyFactory只是简单的做了下选择，当我们设置proxyTargetClass属�
 
 jdk动态代理可以分为获取拦截器链，将拦截器统一封装成ReflectiveMethodInvocation，执行拦截器链三部分。我们来逐一看一下这三部分。
 
-##### [1. 获取拦截器链](#1. 获取拦截器链)
+##### [1.获取拦截器链](#1.获取拦截器链)
 
 首先将获取到所有与当前method匹配的advice(增强)，跟踪getInterceptorsAndDynamicInterceptionAdvice代码，我们发现Spring AOP也使用缓存进行提高性能，如果该方法已经获取过拦截器，则直接取缓存，否则通过advisorChainFactory获取拦截器链。AdvisorChainFactory是用来获得拦截器链接口。它的一个实现类为DefaultAdvisorChainFactory
 
@@ -1689,7 +1689,7 @@ public List<Object> getInterceptorsAndDynamicInterceptionAdvice(AdvisedSupport c
 
 
 
-##### [3. 执行拦截器链](#3. 执行拦截器链)
+##### [3.执行拦截器链](#3.执行拦截器链)
 
 spring能够保证多个切面同时匹配同一方法的而不出现乱序的关键就在下面一段代码了。
 
