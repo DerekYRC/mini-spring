@@ -17,7 +17,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	protected Object doCreateBean(String beanName, BeanDefinition beanDefinition) {
-		Class beanClass = beanDefinition.getBeanClass();
 		Object bean = null;
 		try {
 			bean = createBeanInstance(beanDefinition);
