@@ -352,7 +352,7 @@ public class BeanFactoryProcessorAndBeanPostProcessorTest {
 
 BeanFactory是spring的基础设施，面向spring本身；而ApplicationContext面向spring的使用者，应用场合使用ApplicationContext。
 
-具体实现查看AbstractApplicationContext#refresh方法即可。注意BeanFactoryPostProcessor和BeanPostProcessor的自定识别，这样就可以在xml文件中配置二者而不需要像上一节一样手动添加到容器中了。
+具体实现查看AbstractApplicationContext#refresh方法即可。注意BeanFactoryPostProcessor和BeanPostProcessor的自动识别，这样就可以在xml文件中配置二者而不需要像上一节一样手动添加到容器中了。
 
 从bean的角度看，目前生命周期如下：
 
@@ -1490,9 +1490,6 @@ getBean()时依次检查一级缓存singletonObjects、二级缓存earlySingleto
 最后将代理bean放进一级缓存singletonObjects，见AbstractAutowireCapableBeanFactory第104行。
 
 单测见CircularReferenceWithProxyBeanTest。
-
-## [bug fix：没有为代理bean设置属性（discovered and fixed by @kerwin89）](#bug-fix没有为代理bean设置属性discovered-and-fixed-by-kerwin89)
-
 
 ## [支持懒加载和多切面增强(By @zqczgl)](#支持懒加载和多切面增强by-zqczgl)
 
