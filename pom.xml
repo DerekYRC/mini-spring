@@ -18,10 +18,19 @@
     </properties>
 
     <dependencies>
+
         <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib-nodep</artifactId>
-            <version>3.3.0</version>
+            <groupId>higher-jdk-cglib</groupId>
+            <artifactId>higher-jdk-cglib</artifactId>
+            <version>3.3.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/cglib-3.3.1.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.2</version>
         </dependency>
 
         <dependency>
@@ -60,12 +69,6 @@
             <artifactId>assertj-core</artifactId>
             <version>3.11.1</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>3.3.0</version>
         </dependency>
 
     </dependencies>
