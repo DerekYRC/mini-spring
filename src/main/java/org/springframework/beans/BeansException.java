@@ -3,6 +3,7 @@ package org.springframework.beans;
 /**
  * @author derekyi
  * @date 2020/11/22
+ * bean异常
  */
 public class BeansException extends RuntimeException {
 
