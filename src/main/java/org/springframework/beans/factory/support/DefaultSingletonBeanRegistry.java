@@ -15,13 +15,19 @@ import org.springframework.beans.factory.config.SingletonBeanRegistry;
  */
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
-	//一级缓存
+	 /**
+	  * 一级缓存
+	  */
 	private Map<String, Object> singletonObjects = new HashMap<>();
 
-	//二级缓存
+	 /**
+	  * 二级缓存
+	  */
 	private Map<String, Object> earlySingletonObjects = new HashMap<>();
 
-	//三级缓存
+	 /**
+	  * 三级缓存
+	  */
 	private Map<String, ObjectFactory<?>> singletonFactories = new HashMap<String, ObjectFactory<?>>();
 
 	private final Map<String, DisposableBean> disposableBeans = new HashMap<>();
@@ -46,9 +52,9 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
 	@Override
 	public void addSingleton(String beanName, Object singletonObject) {
-		singletonObjects.put(beanName, singletonObject);
-		earlySingletonObjects.remove(beanName);
-		singletonFactories.remove(beanName);
+		singletonObjects.put(beanName, singletonObject); // 1
+		earlySingletonObjects.remove(beanName); // 2
+		singletonFactories.remove(beanName); // 3
 	}
 
 	protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
