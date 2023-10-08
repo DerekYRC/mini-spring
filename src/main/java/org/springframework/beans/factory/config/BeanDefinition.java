@@ -16,20 +16,36 @@ public class BeanDefinition {
 
 	public static String SCOPE_PROTOTYPE = "prototype";
 
-	private Class beanClass;
 
+	 /**
+	  * bean class类
+	  */
+	 private Class beanClass;
+
+	 /**
+	  * class 属性值
+	  */
 	private PropertyValues propertyValues;
-
+	 /**
+	  * 通过反射 初始化方法名称
+	  */
 	private String initMethodName;
-
+	 /**
+	  * 销毁方法名称
+	  */
 	private String destroyMethodName;
-
+	 /**
+	  * 作用域 默认单例Bean
+	  */
 	private String scope = SCOPE_SINGLETON;
 
 	private boolean singleton = true;
 
 	private boolean prototype = false;
 
+	/*/*
+		懒加载
+	 */
 	private boolean lazyInit=false;
 
 	public BeanDefinition(Class beanClass) {
