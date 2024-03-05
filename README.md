@@ -59,6 +59,8 @@
 ## 使用方法
 阅读[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
 
+[视频教程(完整版)](https://www.bilibili.com/video/BV1nb4y1A7YJ)
+
 ## 提问
 [**点此提问**](https://github.com/DerekYRC/mini-spring/issues/4)
 
