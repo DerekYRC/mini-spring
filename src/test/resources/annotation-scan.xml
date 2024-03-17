@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <bean id="b" class="org.springframework.test.bean.B">
+        <property name="a" ref="a"/>
+    </bean>
+
+    <bean id="a" class="org.springframework.test.bean.A">
+        <property name="b" ref="b"/>
+    </bean>
+
+    <!--  作为A、B的子类，用于验证注解扫描是否扫描父类 -->
+    <bean id="childOfA" class="org.springframework.test.bean.ChildOfA"/>
+    <bean id="childOfB" class="org.springframework.test.bean.ChildOfB"/>
+
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
+<!--    <bean id="pointcutAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">-->
+<!--        <property name="expression" value="execution(* org.springframework.test.bean.A.func(..))"/>-->
+<!--        <property name="advice" ref="methodInterceptor"/>-->
+<!--    </bean>-->
+
+    <bean id="pointcutAdvisor" class="org.springframework.aop.support.annotation.AnnotationPointcutAdvisor">
+        <property name="annotation" value="org.springframework.beans.factory.annotation.BeforeAnnotation"/>
+        <property name="advice" ref="methodInterceptor"/>
+    </bean>
+    <bean id="pointcutAdvisor2" class="org.springframework.aop.support.annotation.AnnotationPointcutAdvisor">
+        <property name="annotation" value="org.springframework.beans.factory.annotation.AfterAnnotation"/>
+        <property name="advice" ref="methodInterceptor2"/>
+    </bean>
+
+
+    <bean id="methodInterceptor" class="org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
+        <property name="advice" ref="beforeAdvice"/>
+    </bean>
+    <bean id="methodInterceptor2" class="org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor">
+        <property name="advice" ref="afterAdvice"/>
+    </bean>
+
+    <bean id="beforeAdvice" class="org.springframework.test.common.ABeforeAdvice"/>
+    <bean id="afterAdvice" class="org.springframework.test.common.BAfterReturningAdvice"/>
+
+</beans>

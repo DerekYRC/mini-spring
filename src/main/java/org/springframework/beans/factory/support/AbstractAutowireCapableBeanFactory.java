@@ -2,6 +2,7 @@ package org.springframework.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.TypeUtil;
 import org.springframework.beans.BeansException;
@@ -14,7 +15,10 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.*;
 import org.springframework.core.convert.ConversionService;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * @author derekyi
@@ -205,7 +209,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				} else {
 					//类型转换
 					Class<?> sourceType = value.getClass();
-					Class<?> targetType = (Class<?>) TypeUtil.getFieldType(bean.getClass(), name);
+					Class<?> targetType = ReflectUtil.getField(bean.getClass(), name).getType();
 					ConversionService conversionService = getConversionService();
 					if (conversionService != null) {
 						if (conversionService.canConvert(sourceType, targetType)) {
@@ -283,7 +287,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			((InitializingBean) bean).afterPropertiesSet();
 		}
 		String initMethodName = beanDefinition.getInitMethodName();
-		if (StrUtil.isNotEmpty(initMethodName) && !(bean instanceof InitializingBean && "afterPropertiesSet".equals(initMethodName))) {
+		if (StrUtil.isNotEmpty(initMethodName)) {
 			Method initMethod = ClassUtil.getPublicMethod(beanDefinition.getBeanClass(), initMethodName);
 			if (initMethod == null) {
 				throw new BeansException("Could not find an init method named '" + initMethodName + "' on bean with name '" + beanName + "'");

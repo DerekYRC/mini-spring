@@ -6,12 +6,10 @@ import java.util.Set;
 
 import org.aopalliance.aop.Advice;
 
-import org.springframework.aop.Advisor;
-import org.springframework.aop.ClassFilter;
-import org.springframework.aop.Pointcut;
-import org.springframework.aop.TargetSource;
+import org.springframework.aop.*;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.aop.support.annotation.AnnotationPointcutAdvisor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.BeanFactory;
@@ -50,11 +48,11 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
 			return bean;
 		}
 
-		Collection<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeansOfType(AspectJExpressionPointcutAdvisor.class)
+		Collection<PointcutAdvisor> advisors = beanFactory.getBeansOfType(PointcutAdvisor.class)
 				.values();
 		try {
 			ProxyFactory proxyFactory = new ProxyFactory();
-			for (AspectJExpressionPointcutAdvisor advisor : advisors) {
+			for (PointcutAdvisor advisor : advisors) {
 				ClassFilter classFilter = advisor.getPointcut().getClassFilter();
 				if (classFilter.matches(bean.getClass())) {
 					TargetSource targetSource = new TargetSource(bean);
