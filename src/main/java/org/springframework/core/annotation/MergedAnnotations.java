@@ -6,7 +6,7 @@ import java.lang.reflect.AnnotatedElement;
 /**
  * @Author:sfy
  * @Date: 2024/3/17 - 16:12
- * Description:
+ * Description: 采集当前类或者方法上的注解，目前仅支持DIRECT和TYPE_HIERARCHY两种策略
  */
 public interface MergedAnnotations {
     static MergedAnnotations from(AnnotatedElement annotatedElement) {
