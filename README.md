@@ -1,54 +1,86 @@
 # <img src="assets/spring-framework.png" width="80" height="80"> mini-spring
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/DerekYRC/mini-spring)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![Stars](https://img.shields.io/github/stars/DerekYRC/mini-spring)](https://img.shields.io/github/stars/DerekYRC/mini-spring)
+[![Forks](https://img.shields.io/github/forks/DerekYRC/mini-spring)](https://img.shields.io/github/forks/DerekYRC/mini-spring)
 
-## About
-* [中文版](./README_CN.md)
+**[English](./README_en.md) | 简体中文**
 
-The **mini-spring** is a simplified version of the Spring framework that will help you quickly get familiar with the Spring source code and grasp the core principles of Spring. The core logic of Spring is extracted, the code is extremely simplified, and the core functions of Spring, such as IoC and AOP, resource loaders, event listeners, type conversion, container extension points, bean life cycle and scope, and application context, are retained.
+**姊妹版：**[**mini-spring-cloud**](https://github.com/DerekYRC/mini-spring-cloud) **(简化版的spring cloud框架)**
 
-If this project can help you, please give a **STAR, thank you!!!**
+## 关于
 
-## Contents
-#### Basics
-* [IoC](#Ioc)
-    * [Implement a simple container](#实现一个简单的容器)
-    * [BeanDefinition and BeanDefinitionRegistry](#BeanDefinition和BeanDefinitionRegistry)
-    * [Bean Instantiation Strategy](#Bean实例化策略InstantiationStrategy)
-    * [Populate bean with property values](#为bean填充属性)
-    * [Populate bean with bean](#为bean注入bean)
-    * [Resource and ResourceLoader](#资源和资源加载器)
-    * [Define the bean in the XML file](#在xml文件中定义bean)
-    * [Container extension mechanism：BeanFactoryPostProcess and BeanPostProcessor](#容器扩展机制BeanFactoryPostProcess和BeanPostProcessor)
-    * [ApplicationContext](#应用上下文ApplicationContext)
-    * [Init method and destroy method of bean](#bean的初始化和销毁方法)
-    * [Aware interface](#Aware接口)
-    * [Bean scope, added prototype support](#bean作用域，增加prototype的支持)
-    * [FactoryBean](#FactoryBean)
-    * [Event and event listener](#容器事件和事件监听器)
-* [AOP](#AOP)
-    * [Pointcut expression](#切点表达式)
-    * [JDK-based dynamic proxy](#基于JDK的动态代理)
-    * [CGLIB-based dynamic proxy](#基于CGLIB的动态代理)
-    * [AOP ProxyFactory](#AOP代理工厂ProxyFactory)
-    * [Common Advice: BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice](#几种常用的Advice)
-    * [PointcutAdvisor：A combination of Pointcut and Advice](#PointcutAdvisor：Pointcut和Advice的组合)
-    * [Dynamic proxies are integrated into the bean lifecycle](#动态代理融入bean生命周期)
+**mini-spring**是简化版的spring框架，能帮助你快速熟悉spring源码和掌握spring的核心原理。抽取了spring的核心逻辑，**代码极度简化，保留spring的核心功能**，如IoC和AOP、资源加载器、事件监听器、类型转换、容器扩展点、bean生命周期和作用域、应用上下文等核心功能。
+
+如果本项目能帮助到你，请给个**STAR，谢谢！！！**
+
+## 功能
+#### 基础篇
+* [IoC](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#基础篇IoC)
+    * [实现一个简单的容器](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#最简单的bean容器)
+    * [BeanDefinition和BeanDefinitionRegistry](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#BeanDefinition和BeanDefinitionRegistry)
+    * [Bean实例化策略InstantiationStrategy](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#Bean实例化策略InstantiationStrategy)
+    * [为bean填充属性](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#为bean填充属性)
+    * [为bean注入bean](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#为bean注入bean)
+    * [资源和资源加载器](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#资源和资源加载器)
+    * [在xml文件中定义bean](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#在xml文件中定义bean)
+    * [容器扩展机制BeanFactoryPostProcess和BeanPostProcessor](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#BeanFactoryPostProcess和BeanPostProcessor)
+    * [应用上下文ApplicationContext](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#应用上下文ApplicationContext)
+    * [bean的初始化和销毁方法](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#bean的初始化和销毁方法)
+    * [Aware接口](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#Aware接口)
+    * [bean作用域，增加prototype的支持](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#bean作用域增加prototype的支持)
+    * [FactoryBean](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#FactoryBean)
+    * [容器事件和事件监听器](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#容器事件和事件监听器)
+* [AOP](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#基础篇AOP)
+    * [切点表达式](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#切点表达式)
+    * [基于JDK的动态代理](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#基于JDK的动态代理)
+    * [基于CGLIB的动态代理](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#基于CGLIB的动态代理)
+    * [AOP代理工厂ProxyFactory](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#AOP代理工厂)
+    * [几种常用的Advice: BeforeAdvice/AfterAdvice/AfterReturningAdvice/ThrowsAdvice](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#几种常用的AdviceBeforeAdviceAfterAdviceAfterReturningAdviceThrowsAdvice)
+    * [PointcutAdvisor：Pointcut和Advice的组合](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#pointcutadvisorpointcut和advice的组合)
+    * [动态代理融入bean生命周期](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#动态代理融入bean生命周期)
     
+#### 扩展篇
+* [PropertyPlaceholderConfigurer](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#propertyplaceholderconfigurer)
+* [包扫描](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#包扫描)
+* [@Value注解](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#value注解)
+* [基于注解@Autowired的依赖注入](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#autowired注解)
+* [类型转换（一）](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#类型转换一)
+* [类型转换（二）](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#类型转换二)
 
-#### Expanding 
-* [PropertyPlaceholderConfigurer](#PropertyPlaceholderConfigurer)
-* [Type conversion](#类型转换)
-* [Package scan](#包扫描)
-* [Autowired annotation](#基于注解的依赖注入Autowired)
+#### 高级篇
+* [解决循环依赖问题（一）：没有代理对象](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#解决循环依赖问题一没有代理对象)
+* [解决循环依赖问题（二）：有代理对象](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#解决循环依赖问题二有代理对象)
 
-#### Advanced
-* [Solve the problem of circular dependencies](#解决循环依赖问题)
+#### 其他
+* [没有为代理bean设置属性(discovered and fixed by kerwin89)](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#bug-fix没有为代理bean设置属性discovered-and-fixed-by-kerwin89)
+* [支持懒加载和多切面增强(by zqczgl)](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md#支持懒加载和多切面增强by-zqczgl)
 
-## Usage
-Each function point corresponds to a branch. Switch to the branch corresponding to the function point to see the new function. The incremental change point is described in the [changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md) file.
+## 使用方法
+阅读[changelog.md](https://github.com/DerekYRC/mini-spring/blob/main/changelog.md)
 
-## Reference
+[视频教程(完整版)](https://www.bilibili.com/video/BV1nb4y1A7YJ)
+
+## 提问
+[**点此提问**](https://github.com/DerekYRC/mini-spring/issues/4)
+
+## 贡献
+欢迎Pull Request
+
+## 关于我
+[**点此了解**](https://github.com/DerekYRC)
+
+手机/微信：**15521077528**  邮箱：**15521077528@163.com**
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=DerekYRC/mini-spring&type=Date)](https://star-history.com/#DerekYRC/mini-spring&Date)
+
+## 版权说明
+未取得本人书面许可，不得将该项目用于商业用途
+
+## 参考
 - [《Spring源码深度解析》](https://book.douban.com/subject/25866350/)
+- [《Spring 源码解析》](http://svip.iocoder.cn/categories/Spring)
 - [《精通Spring 4.x》](https://book.douban.com/subject/26952826/)
-- [tiny-spring](https://github.com/code4craft/tiny-spring)
+- [《tiny-spring》](https://github.com/code4craft/tiny-spring)

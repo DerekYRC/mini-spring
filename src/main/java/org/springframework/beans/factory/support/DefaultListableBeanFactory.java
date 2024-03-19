@@ -4,9 +4,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author derekyi
@@ -15,7 +14,7 @@ import java.util.Set;
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
 		implements ConfigurableListableBeanFactory, BeanDefinitionRegistry {
 
-	private Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
+	private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
 
 	@Override
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
@@ -50,6 +49,22 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		return result;
 	}
 
+	public <T> T getBean(Class<T> requiredType) throws BeansException {
+		List<String> beanNames = new ArrayList<>();
+		for (Map.Entry<String, BeanDefinition> entry : beanDefinitionMap.entrySet()) {
+			Class beanClass = entry.getValue().getBeanClass();
+			if (requiredType.isAssignableFrom(beanClass)) {
+				beanNames.add(entry.getKey());
+			}
+		}
+		if (beanNames.size() == 1) {
+			return getBean(beanNames.get(0), requiredType);
+		}
+
+		throw new BeansException(requiredType + "expected single bean but found " +
+				beanNames.size() + ": " + beanNames);
+	}
+
 	@Override
 	public String[] getBeanDefinitionNames() {
 		Set<String> beanNames = beanDefinitionMap.keySet();
@@ -58,6 +73,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@Override
 	public void preInstantiateSingletons() throws BeansException {
-		beanDefinitionMap.keySet().forEach(this::getBean);
+		beanDefinitionMap.forEach((beanName, beanDefinition) -> {
+			//只有当bean是单例且不为懒加载才会被创建
+			if (beanDefinition.isSingleton() && !beanDefinition.isLazyInit()) {
+				getBean(beanName);
+			}
+		});
 	}
 }
