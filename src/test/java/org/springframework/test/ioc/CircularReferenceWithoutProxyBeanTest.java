@@ -2,8 +2,7 @@ package org.springframework.test.ioc;
 
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.test.bean.A;
-import org.springframework.test.bean.B;
+import org.springframework.test.bean.*;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -18,6 +17,10 @@ public class CircularReferenceWithoutProxyBeanTest {
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:circular-reference-without-proxy-bean.xml");
 		A a = applicationContext.getBean("a", A.class);
 		B b = applicationContext.getBean("b", B.class);
-		assertThat(a.getB() == b).isTrue();
+		A a1 = applicationContext.getBean("a", A.class);
+		A a2 = applicationContext.getBean("a", A.class);
+		assertThat(a.getB() == b).isFalse();
+		assertThat(a1.getB() == a2.getB()).isFalse();
+		assertThat(a1 == a2).isFalse();
 	}
 }

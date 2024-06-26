@@ -51,6 +51,11 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 		singletonFactories.remove(beanName);
 	}
 
+	public void removeOtherCache(String beanName) {
+		earlySingletonObjects.remove(beanName);
+		singletonFactories.remove(beanName);
+	}
+
 	protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
 		singletonFactories.put(beanName, singletonFactory);
 	}
