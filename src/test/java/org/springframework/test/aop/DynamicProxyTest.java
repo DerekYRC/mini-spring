@@ -104,9 +104,9 @@ public class DynamicProxyTest {
     public void testThrowsAdvice() throws Exception {
         WorldService worldService = new WorldServiceWithExceptionImpl();
         //设置ThrowsAdvice
-        WorldServiceAfterReturningAdvice afterReturningAdvice = new WorldServiceAfterReturningAdvice();
+        WorldServiceThrowsAdvice throwsAdvice = new WorldServiceThrowsAdvice();
         GenericInterceptor methodInterceptor = new GenericInterceptor();
-        methodInterceptor.setAfterReturningAdvice(afterReturningAdvice);
+        methodInterceptor.setThrowsAdvice( throwsAdvice);
         advisedSupport.setMethodInterceptor(methodInterceptor);
         advisedSupport.setTargetSource(new TargetSource(worldService));
 
