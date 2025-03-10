@@ -5,6 +5,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.stereotype.Component;
 
+import java.beans.Introspector;
 import java.util.Set;
 
 /**
@@ -64,7 +65,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Component component = beanClass.getAnnotation(Component.class);
 		String value = component.value();
 		if (StrUtil.isEmpty(value)) {
-			value = StrUtil.lowerFirst(beanClass.getSimpleName());
+			value = Introspector.decapitalize(beanClass.getSimpleName());
 		}
 		return value;
 	}
