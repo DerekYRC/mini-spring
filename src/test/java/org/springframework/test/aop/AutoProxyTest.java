@@ -10,7 +10,7 @@ import org.springframework.test.service.WorldService;
  */
 public class AutoProxyTest {
 
-	@Test
+	@Test(expected = RuntimeException.class)
 	public void testAutoProxy() throws Exception {
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:auto-proxy.xml");
 		WorldService worldService = applicationContext.getBean("worldService", WorldService.class);

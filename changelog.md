@@ -801,6 +801,14 @@ Spring将AOP联盟中的Advice细化出各种类型的Advice，常用的有Befor
 - [ ] AfterReturningAdvice
 - [ ] ThrowsAdvice   
 
+
+补充：已全部实现（甚至是拦截器AroundAdvice）
+- [x] BeforeAdvice
+- [x] AfterAdvice
+- [x] AfterReturningAdvice
+- [x] ThrowsAdvice
+- [x] AroundAdvice
+
 测试：
 ```
 public class WorldServiceBeforeAdvice implements MethodBeforeAdvice {
@@ -900,33 +908,65 @@ auto-proxy.xml
 		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
     <bean id="worldService" class="org.springframework.test.service.WorldServiceImpl"/>
+    <bean id="worldServiceWithException" class="org.springframework.test.service.WorldServiceWithExceptionImpl"/>
 
+    <!-- 自动代理创建器 -->
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
 
+    <!-- 通知器（定义切点 + 通知） -->
     <bean id="pointcutAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
         <property name="expression" value="execution(* org.springframework.test.service.WorldService.explode(..))"/>
-        <property name="advice" ref="methodInterceptor"/>
+        <property name="advice" ref="combineAdviceInterceptor"/>
     </bean>
 
+    <!-- 通知适配器集合（将 advice 封装为 MethodInterceptor） -->
+    <bean id="combineAdviceInterceptor" class="org.springframework.aop.CombineAdviceInterceptor">
+        <property name="beforeAdviceInterceptor" ref="methodBeforeAdviceInterceptor"/>
+        <property name="afterAdviceInterceptor" ref="methodAfterAdviceInterceptor"/>
+        <property name="afterReturningAdviceInterceptor" ref="methodAfterReturningAdviceInterceptor"/>
+        <property name="throwsAdviceInterceptor" ref="methodThrowsAdviceInterceptor"/>
+        <property name="aroundAdviceInterceptor" ref="methodAroundAdviceInterceptor"/>
+    </bean>
 
-    <bean id="methodInterceptor" class="org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
+    <!-- 各类通知及其适配器 -->
+    <bean id="methodBeforeAdviceInterceptor" class="org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
         <property name="advice" ref="beforeAdvice"/>
     </bean>
-
     <bean id="beforeAdvice" class="org.springframework.test.common.WorldServiceBeforeAdvice"/>
+
+    <bean id="methodAfterAdviceInterceptor" class="org.springframework.aop.framework.adapter.MethodAfterAdviceInterceptor">
+        <property name="advice" ref="afterAdvice"/>
+    </bean>
+    <bean id="afterAdvice" class="org.springframework.test.common.WorldServiceAfterAdvice"/>
+
+    <bean id="methodAfterReturningAdviceInterceptor" class="org.springframework.aop.framework.adapter.MethodAfterReturningAdviceInterceptor">
+        <property name="advice" ref="afterReturningAdvice"/>
+    </bean>
+    <bean id="afterReturningAdvice" class="org.springframework.test.common.WorldServiceAfterReturningAdvice"/>
+
+    <bean id="methodThrowsAdviceInterceptor" class="org.springframework.aop.framework.adapter.MethodThrowsAdviceInterceptor">
+        <property name="advice" ref="throwsAdvice"/>
+    </bean>
+    <bean id="throwsAdvice" class="org.springframework.test.common.WorldServiceThrowsAdvice"/>
+
+    <bean id="methodAroundAdviceInterceptor" class="org.springframework.aop.framework.adapter.MethodAroundAdviceInterceptor">
+        <property name="advice" ref="aroundAdvice"/>
+    </bean>
+    <bean id="aroundAdvice" class="org.springframework.test.common.WorldServiceAroundAdvice"/>
 
 </beans>
 ```
 ```
 public class AutoProxyTest {
 
-	@Test
+	@Test(expected = RuntimeException.class)
 	public void testAutoProxy() throws Exception {
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:auto-proxy.xml");
-
-		//获取代理对象
 		WorldService worldService = applicationContext.getBean("worldService", WorldService.class);
+		// 因为有环绕通知，所以是走到环绕通知，其余的可以自行测试（例如删掉配置aroundAdviceInterceptor）
 		worldService.explode();
+		WorldService worldServiceWithException = applicationContext.getBean("worldServiceWithException", WorldService.class);
+		worldServiceWithException.explode();
 	}
 }
 ```
