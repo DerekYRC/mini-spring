@@ -802,7 +802,7 @@ Spring将AOP联盟中的Advice细化出各种类型的Advice，常用的有Befor
 - [ ] ThrowsAdvice   
 
 
-补充：已全部实现（甚至是拦截器AroundAdvice）
+补充：已全部实现（甚至是AroundAdvice）
 - [x] BeforeAdvice
 - [x] AfterAdvice
 - [x] AfterReturningAdvice
