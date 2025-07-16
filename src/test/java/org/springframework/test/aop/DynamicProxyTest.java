@@ -9,11 +9,8 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.framework.CglibAopProxy;
 import org.springframework.aop.framework.JdkDynamicAopProxy;
 import org.springframework.aop.framework.ProxyFactory;
-import org.springframework.test.common.WorldServiceAfterAdvice;
-import org.springframework.test.common.WorldServiceAfterReturningAdvice;
-import org.springframework.test.common.WorldServiceBeforeAdvice;
+import org.springframework.test.common.*;
 import org.springframework.aop.GenericInterceptor;
-import org.springframework.test.common.WorldServiceThrowsAdvice;
 import org.springframework.test.service.WorldService;
 import org.springframework.test.service.WorldServiceImpl;
 import org.springframework.test.service.WorldServiceWithExceptionImpl;
@@ -139,6 +136,16 @@ public class DynamicProxyTest {
         advisedSupport.setMethodInterceptor(methodInterceptor);
         advisedSupport.setTargetSource(new TargetSource(worldService));
 
+        WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+        proxy.explode();
+    }
+
+    @Test
+    public void testAroundAdvice() throws Exception {
+        WorldServiceAroundAdvice aroundAdvice = new WorldServiceAroundAdvice();
+        GenericInterceptor methodInterceptor = new GenericInterceptor();
+        methodInterceptor.setAroundAdvice(aroundAdvice);
+        advisedSupport.setMethodInterceptor(methodInterceptor);
         WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
         proxy.explode();
     }

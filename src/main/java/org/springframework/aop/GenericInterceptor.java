@@ -12,10 +12,17 @@ public class GenericInterceptor implements MethodInterceptor {
     private AfterAdvice afterAdvice;
     private AfterReturningAdvice afterReturningAdvice;
     private ThrowsAdvice throwsAdvice;
+    private AroundAdvice aroundAdvice;
 
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
+        // 如果配置了环绕通知，则优先执行环绕通知
+        if (aroundAdvice != null) {
+            // 环绕通知会通过 invocation.proceed() 来触发后续的通知链或目标方法执行
+            return aroundAdvice.around(invocation);
+        }
+
         Object result = null;
         try {
             // 前置通知
@@ -56,4 +63,6 @@ public class GenericInterceptor implements MethodInterceptor {
     public void setAfterAdvice(AfterAdvice afterAdvice) {
         this.afterAdvice = afterAdvice;
     }
+
+    public void setAroundAdvice(AroundAdvice aroundAdvice) {this.aroundAdvice = aroundAdvice;}
 }
