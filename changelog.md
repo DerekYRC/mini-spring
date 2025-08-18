@@ -936,12 +936,17 @@ public class AutoProxyTest {
 
 经常需要将配置信息配置在properties文件中，然后在XML文件中以占位符的方式引用。
 
-实现思路很简单，在bean实例化之前，编辑BeanDefinition，解析XML文件中的占位符，然后用properties文件中的配置值替换占位符。而BeanFactoryPostProcessor具有编辑BeanDefinition的能力，因此PropertyPlaceholderConfigurer继承自BeanFactoryPostProcessor。
+实现思路很简单，在bean实例化之前，编辑BeanDefinition，解析XML文件中的占位符，然后用properties文件中的配置值替换占位符。而BeanFactoryPostProcessor具有编辑BeanDefinition的能力，因此PropertyPlaceholderConfigurer继承自BeanFactoryPostProcessor。(实现了多占位和嵌套占位符)
 
 测试：
-car.properties
+server-config.properties
 ```
-brand=lamborghini
+host=localhost
+port=8080
+env=dev
+base.dev=/api/dev
+region.location=China
+
 ```
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -954,11 +959,13 @@ brand=lamborghini
 		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
     <bean class="org.springframework.beans.factory.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:car.properties" />
+        <property name="location" value="classpath:server-config.properties" />
     </bean>
 
-    <bean id="car" class="org.springframework.test.bean.Car">
-        <property name="brand" value="${brand}" />
+    <bean id="serverConfig" class="org.springframework.test.bean.ServerConfig">
+        <property name="url" value="http://${host}:${port}" />
+        <property name="path" value="${base.${env}}" />
+        <property name="location" value="${region.location}" />
     </bean>
 
 </beans>
@@ -969,9 +976,10 @@ public class PropertyPlaceholderConfigurerTest {
 	@Test
 	public void test() throws Exception {
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:property-placeholder-configurer.xml");
-
-		Car car = applicationContext.getBean("car", Car.class);
-		assertThat(car.getBrand()).isEqualTo("lamborghini");
+		ServerConfig serverConfig = applicationContext.getBean("serverConfig", ServerConfig.class);
+		assertThat(serverConfig.getUrl()).isEqualTo("http://localhost:8080");
+		assertThat(serverConfig.getPath()).isEqualTo("/api/dev");
+		assertThat(serverConfig.getLocation()).isEqualTo("China");
 	}
 }
 ```
