@@ -1253,20 +1253,58 @@ public class StringToNumberConverterFactory implements ConverterFactory<String, 
 
 		@Override
 		public T convert(String source) {
-			if (source.length() == 0) {
+			// 处理null和空字符串
+			if (source == null || source.isEmpty()) {
 				return null;
 			}
 
-			if (targetType.equals(Integer.class)) {
-				return (T) Integer.valueOf(source);
-			} else if (targetType.equals(Long.class)) {
-				return (T) Long.valueOf(source);
+			// 去除首尾空白字符
+			source = source.trim();
+			if (source.isEmpty()) {
+				return null;
 			}
-			//TODO 其他数字类型
 
-			else {
+			try {
+				// Integer类型转换
+				if (targetType.equals(Integer.class)) {
+					return (T) Integer.valueOf(source);
+				}
+				// Long类型转换
+				else if (targetType.equals(Long.class)) {
+					return (T) Long.valueOf(source);
+				}
+				// Short类型转换
+				else if (targetType.equals(Short.class)) {
+					return (T) Short.valueOf(source);
+				}
+				// Byte类型转换
+				else if (targetType.equals(Byte.class)) {
+					return (T) Byte.valueOf(source);
+				}
+				// Float类型转换
+				else if (targetType.equals(Float.class)) {
+					return (T) Float.valueOf(source);
+				}
+				// Double类型转换
+				else if (targetType.equals(Double.class)) {
+					return (T) Double.valueOf(source);
+				}
+				// BigInteger类型转换
+				else if (targetType.equals(BigInteger.class)) {
+					return (T) new BigInteger(source);
+				}
+				// BigDecimal类型转换
+				else if (targetType.equals(BigDecimal.class)) {
+					return (T) new BigDecimal(source);
+				}
+				// 不支持的数字类型
+				else {
+					throw new IllegalArgumentException(
+							"Cannot convert String [" + source + "] to target class [" + targetType.getName() + "]");
+				}
+			} catch (NumberFormatException ex) {
 				throw new IllegalArgumentException(
-						"Cannot convert String [" + source + "] to target class [" + targetType.getName() + "]");
+						"Cannot convert String [" + source + "] to target class [" + targetType.getName() + "]", ex);
 			}
 		}
 	}
@@ -1276,8 +1314,86 @@ public class StringToNumberConverterFactory implements ConverterFactory<String, 
 使用：
 ```
 StringToNumberConverterFactory converterFactory = new StringToNumberConverterFactory();
+
 Converter<String, Integer> stringToIntegerConverter = converterFactory.getConverter(Integer.class);
-Integer num = stringToIntegerConverter.convert("8888");
+Integer intNum = stringToIntegerConverter.convert("8888");
+assertThat(intNum).isEqualTo(8888);
+
+Converter<String, Long> stringToLongConverter = converterFactory.getConverter(Long.class);
+Long longNum = stringToLongConverter.convert("8888");
+assertThat(longNum).isEqualTo(8888L);
+
+// Short类型测试
+Converter<String, Short> shortConverter = converterFactory.getConverter(Short.class);
+assertThat(shortConverter.convert("123")).isEqualTo((short) 123);
+assertThat(shortConverter.convert("-123")).isEqualTo((short) -123);
+
+// Byte类型测试
+Converter<String, Byte> byteConverter = converterFactory.getConverter(Byte.class);
+assertThat(byteConverter.convert("100")).isEqualTo((byte) 100);
+assertThat(byteConverter.convert("-100")).isEqualTo((byte) -100);
+
+// Float类型测试
+Converter<String, Float> floatConverter = converterFactory.getConverter(Float.class);
+assertThat(floatConverter.convert("123.45")).isEqualTo(123.45f);
+assertThat(floatConverter.convert("-123.45")).isEqualTo(-123.45f);
+assertThat(floatConverter.convert("1.23E+2")).isEqualTo(123.0f);
+
+// Double类型测试
+Converter<String, Double> doubleConverter = converterFactory.getConverter(Double.class);
+assertThat(doubleConverter.convert("123.456")).isEqualTo(123.456d);
+assertThat(doubleConverter.convert("-123.456")).isEqualTo(-123.456d);
+assertThat(doubleConverter.convert("1.23E+2")).isEqualTo(123.0d);
+
+// BigInteger类型测试
+Converter<String, BigInteger> bigIntConverter = converterFactory.getConverter(BigInteger.class);
+assertThat(bigIntConverter.convert("12345678901234567890"))
+		.isEqualTo(new BigInteger("12345678901234567890"));
+
+// BigDecimal类型测试
+Converter<String, BigDecimal> bigDecimalConverter = converterFactory.getConverter(BigDecimal.class);
+assertThat(bigDecimalConverter.convert("123.456789012345"))
+		.isEqualTo(new BigDecimal("123.456789012345"));
+
+// null和空字符串测试
+assertThat(stringToIntegerConverter.convert(null)).isNull();
+assertThat(stringToIntegerConverter.convert("")).isNull();
+assertThat(stringToIntegerConverter.convert("   ")).isNull();
+
+// 空白字符处理测试
+assertThat(stringToIntegerConverter.convert("  123  ")).isEqualTo(123);
+assertThat(stringToIntegerConverter.convert("\t456\t")).isEqualTo(456);
+
+// 异常情况测试
+assertThatThrownBy(() -> stringToIntegerConverter.convert("abc"))
+		.isInstanceOf(IllegalArgumentException.class)
+		.hasMessageContaining("Cannot convert String [abc] to target class [java.lang.Integer]");
+
+assertThatThrownBy(() -> stringToIntegerConverter.convert("12.34"))
+		.isInstanceOf(IllegalArgumentException.class)
+		.hasMessageContaining("Cannot convert String [12.34] to target class [java.lang.Integer]");
+
+assertThatThrownBy(() -> stringToIntegerConverter.convert("123abc"))
+		.isInstanceOf(IllegalArgumentException.class)
+		.hasMessageContaining("Cannot convert String [123abc] to target class [java.lang.Integer]");
+
+// 数值溢出测试
+assertThatThrownBy(() -> shortConverter.convert("32768")) // Short.MAX_VALUE + 1
+		.isInstanceOf(IllegalArgumentException.class);
+
+assertThatThrownBy(() -> byteConverter.convert("128")) // Byte.MAX_VALUE + 1
+		.isInstanceOf(IllegalArgumentException.class);
+
+// 边界值测试
+assertThat(stringToIntegerConverter.convert(String.valueOf(Integer.MAX_VALUE)))
+		.isEqualTo(Integer.MAX_VALUE);
+assertThat(stringToIntegerConverter.convert(String.valueOf(Integer.MIN_VALUE)))
+		.isEqualTo(Integer.MIN_VALUE);
+
+assertThat(stringToLongConverter.convert(String.valueOf(Long.MAX_VALUE)))
+		.isEqualTo(Long.MAX_VALUE);
+assertThat(stringToLongConverter.convert(String.valueOf(Long.MIN_VALUE)))
+		.isEqualTo(Long.MIN_VALUE);
 ```
 
 ### 三、GenericConverter
