@@ -1777,6 +1777,7 @@ public class AfterReturningAdviceInterceptor implements MethodInterceptor, After
 #### [测试](#测试)
 
 ！！！！！！！注意，使用过高版本的java可以因为java版本和cjlib冲突导致报错。建议使用java8进行测试
+另外一种方式：可以在jvm启动的时候添加参数:--add-opens java.base/java.lang=ALL-UNNAMED
 
 ```java
 public class WorldServiceImpl implements WorldService {
