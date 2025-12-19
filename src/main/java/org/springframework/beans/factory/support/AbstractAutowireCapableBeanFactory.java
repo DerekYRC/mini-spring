@@ -101,7 +101,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object exposedObject = bean;
 		if (beanDefinition.isSingleton()) {
 			//如果有代理对象，此处获取代理对象
-			exposedObject = getSingleton(beanName);
+			Object earlySingletonReference = getSingleton(beanName, false);
+			if(earlySingletonReference != null){
+				//一级,二级缓存中的bean保持一致
+				exposedObject = earlySingletonReference;
+			}
 			addSingleton(beanName, exposedObject);
 		}
 		return exposedObject;

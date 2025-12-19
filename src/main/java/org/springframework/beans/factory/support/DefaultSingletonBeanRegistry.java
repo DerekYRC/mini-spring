@@ -28,10 +28,15 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
 	@Override
 	public Object getSingleton(String beanName) {
+		return getSingleton(beanName,true);
+	}
+
+	public Object getSingleton(String beanName,boolean allowEarlyReference) {
 		Object singletonObject = singletonObjects.get(beanName);
 		if (singletonObject == null) {
 			singletonObject = earlySingletonObjects.get(beanName);
-			if (singletonObject == null) {
+			//不是所有的getSingleton()都要去三级缓存里面查！
+			if (singletonObject == null && allowEarlyReference) {
 				ObjectFactory<?> singletonFactory = singletonFactories.get(beanName);
 				if (singletonFactory != null) {
 					singletonObject = singletonFactory.getObject();
