@@ -17,6 +17,7 @@ import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
+import java.beans.Introspector;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -106,8 +107,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			//id优先于name
 			beanName = StrUtil.isNotEmpty(beanId) ? beanId : beanName;
 			if (StrUtil.isEmpty(beanName)) {
-				//如果id和name都为空，将类名的第一个字母转为小写后作为bean的名称
-				beanName = StrUtil.lowerFirst(clazz.getSimpleName());
+				// 使用 Introspector.decapitalize 遵循 Spring 源码规则:
+				// "URL" -> "URL", "X" -> "x", "FooBah" -> "fooBah"
+				beanName = Introspector.decapitalize(clazz.getSimpleName());
 			}
 
 			BeanDefinition beanDefinition = new BeanDefinition(clazz);
