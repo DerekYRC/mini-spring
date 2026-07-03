@@ -73,8 +73,6 @@
 ## 关于我
 [**点此了解**](https://github.com/DerekYRC)
 
-手机/微信：**15975984828**  邮箱：**15975984828@163.com**
-
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=DerekYRC/mini-spring&type=Date)](https://star-history.com/#DerekYRC/mini-spring&Date)
