@@ -76,7 +76,7 @@ Phone/WeChat: **15975984828**  Email: **15975984828@163.com**
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=DerekYRC/mini-spring&type=Date)](https://star-history.com/#DerekYRC/mini-spring&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=DerekYRC/mini-spring&type=Date)](https://star-history.dera.page/#DerekYRC/mini-spring&Date)
 
 ## Copyright Notice
 This project may not be used for commercial purposes without my written permission.
